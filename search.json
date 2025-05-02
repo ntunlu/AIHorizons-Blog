@@ -1,0 +1,107 @@
+[
+  {
+    "objectID": "posts/jepa/index.html",
+    "href": "posts/jepa/index.html",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element.\nİşte bu noktada sahneye çıkan önemli bir isim var: Yann LeCun. Yapay zekânın öncülerinden biri olan LeCun, NVIDIA GTC 2025 etkinliğinde yaptığı açıklamada çarpıcı bir görüş dile getirdi: “Artık LLM’lerle ilgilenmiyorum.” Bu iddialı ifade, aslında çok daha derin bir yaklaşımın habercisiydi. LeCun, yapay zekânın geleceğinin farklı bir yönde ilerlemesi gerektiğini savunuyor ve bu yolculukta LLM’lerin sınırlı bir rolü olduğunu belirtiyor.\nYouTube Video Link: Buradan izleyebilirsiniz."
+  },
+  {
+    "objectID": "posts/jepa/index.html#llmler-neden-yetersiz",
+    "href": "posts/jepa/index.html#llmler-neden-yetersiz",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "LLM’ler Neden Yetersiz?",
+    "text": "LLM’ler Neden Yetersiz?\nLeCun’a göre LLM’ler, çoğunlukla metin tabanlı veriyle eğitilen, bir sonraki kelimeyi tahmin eden sistemlerdir. Bu sistemler, ürünlerde küçük iyileştirmeler yapmaya elverişli olabilir ancak gerçek dünya bilgisiyle derinlemesine etkileşim kuramazlar. Çünkü kelimelerle sınırlı bir temsil biçimi, fiziksel dünya gibi karmaşık ve sürekli değişen bir ortamı anlamak için yeterli değildir.\nDahası, LLM’ler dört temel alanda yetersiz kalıyor:\n\nLeCun, bu alanların yapay zekânın geleceği için kritik olduğunu ve LLM mimarilerinin bu ihtiyaçlara cevap veremediğini vurguluyor."
+  },
+  {
+    "objectID": "posts/jepa/index.html#dünya-modelleri-ve-yeni-yönelimler",
+    "href": "posts/jepa/index.html#dünya-modelleri-ve-yeni-yönelimler",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Dünya Modelleri ve Yeni Yönelimler",
+    "text": "Dünya Modelleri ve Yeni Yönelimler\nLeCun’un önerdiği yaklaşımın temelinde “dünya modeli” fikri yatıyor. Bu kavram, yapay zekânın çevresini tıpkı bir insan gibi “içsel bir modelle” anlayabilmesini ifade ediyor. Örneğin, bir nesneyi yukarıdan ittirdiğinizde devrileceğini ya da aşağı kısmından ittiğinizde kayacağını bilmek, insanların doğrudan gözlemle kazandığı bir yetidir. LeCun, yapay zekânın da benzer şekilde çevresini anlaması gerektiğini söylüyor.\nBunu başarmak için önerdiği çözüm ise: JEPA (Joint Embedding Predictive Architecture) (Ortak Gömülü Öngörüsel Mimari)."
+  },
+  {
+    "objectID": "posts/jepa/index.html#jepa-mimarisi-yeni-nesil-zeka",
+    "href": "posts/jepa/index.html#jepa-mimarisi-yeni-nesil-zeka",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "JEPA Mimarisi: Yeni Nesil Zeka",
+    "text": "JEPA Mimarisi: Yeni Nesil Zeka\nJEPA, klasik LLM’lerin aksine, üretici olmayan (non-generative) ve soyut temsil tahmini yapan bir mimaridir. LeCun’un açıklamalarına göre, JEPA modeli doğrudan piksel tahmini yapmaz. Onun yerine, videolarda ya da verilerde gizlenmiş bölümleri soyut bir temsil uzayında tahmin eder. Bu da modeli daha verimli, daha anlamlı ve gerçek dünya bağlamıyla daha uyumlu hale getirir.\n\nSoyut Temsil Öğrenimi\nJEPA, geleneksel modellerin yaptığı gibi girdiyi olduğu gibi yeniden üretmeye çalışmak yerine; girdinin soyut özelliklerini temsili bir uzayda öğrenmeye ve bu uzayda anlamlı ilişkiler kurarak çıkarımlar yapmaya odaklanır. Bu da, sistemi daha verimli, daha esnek ve insan kavrayışıyla daha uyumlu hâle getirir; çünkü insanlar da çevrelerini piksel düzeyinde değil, kavramsal düzeyde algılar ve yorumlar.\n\n\nMaskeleme ile Öngörüsel Öğrenme\nModelin eğitimi sırasında, video veya veri akışının belirli bölümleri kasıtlı olarak maskelenir; ardından JEPA, eksik kalan parçaları, ham görsellerle değil, temsil uzayındaki soyut özelliklerle tamamlamaya çalışır. Bu strateji sayesinde, model yalnızca verinin “görünüşünü” değil, altında yatan “anlamını” da kavrayabilir; örneğin, bir videonun belirli bir karesi eksildiğinde, JEPA bu karede ne olabileceğini görsel sadakatle değil, bağlamsal bütünlükle tahmin eder.\n\n\nDünya Modeli Yeteneği\nJEPA, doğadan alınmış video verileri üzerinde eğitilerek, tıpkı insanlarda olduğu gibi bir dünya modeli geliştirir; bu model, nesnelerin hareketlerine ilişkin sezgisel fizik kurallarını içselleştirir. Örneğin; bir nesnenin havada süzülüp süzülemeyeceği, kaybolup kaybolmaması gerektiği veya şeklinin doğal olmayan biçimde değişip değişmediği gibi olayların fiziki doğruluğunu analiz edebilir; bu da, yapay zekânın yalnızca görsel değil, mantıksal tutarlılıkla da olayları değerlendirebilmesini sağlar.\n\n\nAz Veriyle Verimli Öğrenme\nJEPA, LLM’lerin ihtiyaç duyduğu devasa miktarda veriyle değil;tıpkı çocukların birkaç örnekle kavram öğrenmesi gibi, az sayıda örnekle etkili öğrenme gerçekleştirebilir. Bu özellik, hem veri kaynaklarının sınırlı olduğu durumlar için avantaj sağlar hem de eğitimi daha verimli ve sürdürülebilir hâle getirir.Meta’nın geliştirdiği bu mimari, insan öğrenmesine oldukça benzer şekilde çalışır."
+  },
+  {
+    "objectID": "posts/jepa/index.html#transformer-yerine-neden-jepa",
+    "href": "posts/jepa/index.html#transformer-yerine-neden-jepa",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Transformer Yerine Neden JEPA?",
+    "text": "Transformer Yerine Neden JEPA?\n\n\n\n\n\n\n\n\nÖzellik\nTransformer (LLM, VideoGen)\nJEPA\n\n\n\n\nÖğrenme Türü\nToken/Piksel Tahmini\nTemsil Üzerinden Tahmin\n\n\nVerimlilik\nYüksek işlem gücü, çok veri\nDaha az veri ile etkili\n\n\nGerçeklik Bağlantısı\nZayıf, metin tabanlı\nGüçlü, video ve fiziksel bağlam\n\n\nAkıl Yürütme\nSöz dizimi temelli\nKavramsal ve açık"
+  },
+  {
+    "objectID": "posts/jepa/index.html#sistem-1-ve-sistem-2-düşünme-modelleri",
+    "href": "posts/jepa/index.html#sistem-1-ve-sistem-2-düşünme-modelleri",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Sistem 1 ve Sistem 2 Düşünme Modelleri",
+    "text": "Sistem 1 ve Sistem 2 Düşünme Modelleri\nLeCun, yapay zekâda “düşünme” kavramına da önemli bir boyut ekliyor: Sistem 1 ve Sistem 2 düşünme modelleri. Psikolojide yer alan bu yaklaşım, insanların iki tür düşünme biçimi olduğunu söyler:\n\nSistem 1: Hızlı, sezgisel ve otomatik düşünmedir. (Örnek: Deneyimli bir sürücünün araç kullanması)\nSistem 2: Yavaş, mantıklı ve planlı düşünmedir. (Örnek: Satrançta strateji kurmak)\n\nLLM’ler, genellikle Sistem 1 tipi davranışlar sergiler. Ancak LeCun’a göre gerçek AGI’ye ulaşmak için Sistem 2 düşünce biçimini taklit eden mimarilere ihtiyaç vardır. JEPA mimarisi, bu tür “akıl yürütme” süreçlerine daha uygun bir zemin sunar."
+  },
+  {
+    "objectID": "posts/jepa/index.html#sadece-metinle-agi-mümkün-mü",
+    "href": "posts/jepa/index.html#sadece-metinle-agi-mümkün-mü",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Sadece Metinle AGI Mümkün mü?",
+    "text": "Sadece Metinle AGI Mümkün mü?\nLeCun, metinle eğitilen sistemlerin veri sınırlarını da gündeme getiriyor. Şu anda LLM’ler yaklaşık 30 trilyon token ile eğitiliyor. Bu miktarda metni okumak bir insan için 400 bin yıl sürerdi. Ancak bir çocuk, sadece 4 yaşına kadar olan süreçte, görsel yollarla benzer büyüklükte bir veri alıyor. Bu, görsel ve deneyimsel öğrenmenin ne kadar önemli olduğunu gösteriyor."
+  },
+  {
+    "objectID": "posts/jepa/index.html#sonuç-agiye-giden-yol-farklı",
+    "href": "posts/jepa/index.html#sonuç-agiye-giden-yol-farklı",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Sonuç: AGI’ye Giden Yol Farklı",
+    "text": "Sonuç: AGI’ye Giden Yol Farklı\nYann LeCun’un bu açıklamaları, yapay zekâda yeni bir çağın başlangıcına işaret ediyor olabilir. Büyük dil modelleri her ne kadar şu an için etkileyici uygulamalar sunsa da, gerçek anlamda genel yapay zekâya sahip sistemler;, fiziksel dünyayı anlayan, plan yapabilen ve soyut düşünebilen mimarilerle mümkün olacak.\nJEPA gibi yaklaşımlar, yapay zekânın sadece veriyi işleyen değil, dünyayı anlayan bir varlığa dönüşmesini sağlayabilir. Belki de gelecekteki AGI sistemleri, LLM’lerin bir uzantısı değil; onlardan tamamen farklı, çok daha derin ve esnek yapılar olacak."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "AIHorizons- by NTU",
+    "section": "",
+    "text": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek\n\n\n\n\n\n\nGen AI\n\n\nExpert Opinion\n\n\n\n2025 yılında üretken yapay zeka (Gen AI), günlük yaşamın ayrılmaz bir parçası haline geldi. Harvard Business Review’de 9 Nisan 2025’te Marc Zao-Sanders tarafından yayımlanan makale, Gen AI’nin kullanım alanlarını ve ortaya çıkan trendleri derinlemesine inceliyor. Reddit ve Quora gibi platformlardan toplanan veriler, yapay zekanın kişisel ve profesyonel alanlarda nasıl bir dönüşüm yarattığını gösteriyor. Bu yazıda, makaledeki ana başlıklara ve ek bilgilere dayanarak, Gen AI’nin 2025’teki durumuna dair bir özet sunuluyor.\n\n\n\n\n\n27 Nis 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\n\n\n\n\n\n\nJEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi\n\n\n\n\n\n\nAI\n\n\nLLM\n\n\nAGI\n\n\nExpert Opinion\n\n\n\nYapay zekâ alanında devrim niteliğinde gelişmeler yaşanıyor. Son yıllarda özellikle büyük dil modelleri (LLM’ler), hem teknoloji dünyasında hem de kamuoyunda büyük bir heyecan yarattı. ChatGPT, Copilot, Claude, Llama, Grok gibi modeller artık günlük hayatın bir parçası. Ancak bu modellerin gerçekten “yapay genel zekâya - Artificial General Intelligence (AGI)” sahip olup olamayacağı hâlâ büyük bir soru işareti.\n\n\n\n\n\n23 Nis 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\nEşleşen öğe yok"
+  },
+  {
+    "objectID": "posts/genai/index.html",
+    "href": "posts/genai/index.html",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element.\n2025’te Gen AI, teknolojik bir yenilik olmaktan çıkıp pratik bir araca dönüştü. Geçen yıl HBR’nin viral infografiği, kişisel ve profesyonel kullanım arasındaki dengeyi ortaya koymuştu. Bu yıl, kullanım alanları çeşitlenerek duygusal odaklı senaryolar öne çıkıyor. Custom GPT’ler, DeepSeek ve Grok gibi yeni oyuncular, ve Google’ın NotebookLM gibi yenilikçi araçları rekabeti artırdı. OpenAI’nin tek arayüz yaklaşımı kullanım kolaylığı sağlarken, zincirleme düşünce (chain of thought) özelliği derin yanıtlar sunuyor. Sesli komutlar ve düşen maliyetler, Gen AI’yi daha erişilebilir kılıyor. Ayrıca, yapay zeka hakkında aşırı olumlu ya da aşırı olumsuz gelecek beklentileri tartışılırken, büyük dil modellerinin (LLM’ler) tavsiyeden eyleme, yani “agentik davranışa” geçişi öngörülüyor.\n\nHBR’da yayımlanan makaleye buradan erişebilirsiniz."
+  },
+  {
+    "objectID": "posts/genai/index.html#kullanıcılar-şu-anda-neler-yapıyor",
+    "href": "posts/genai/index.html#kullanıcılar-şu-anda-neler-yapıyor",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Kullanıcılar Şu Anda Neler Yapıyor?",
+    "text": "Kullanıcılar Şu Anda Neler Yapıyor?\nKullanıcılar, Gen AI’yi hem iş hem de kişisel hayatlarında yoğun bir şekilde kullanıyor. 100 farklı kullanım senaryosu, altı ana tema altında toplanıyor:\n\n\n“Kişisel ve Profesyonel Destek” en baskın tema olarak öne çıkıyor.En yaygın 10 kullanım senaryosu ise şunlar:\n1️⃣ Terapi ve arkadaşlık – Özellikle ruh sağlığı hizmetlerinin sınırlı olduğu bölgelerde, Gen AI duygusal destek sağlıyor.\n2️⃣ Hayatımı düzenleme – Kullanıcılar günlük görevlerini planlamak için Gen AI’ye yöneliyor.\n3️⃣ Amaç bulma – İnsanlar, yaşamlarına anlam katmak için yapay zekadan destek alıyor.\n4️⃣ Öğrenmeyi geliştirme – Eğitimde Gen AI, öğrenme süreçlerini kişiselleştiriyor.\n5️⃣ Kod üretme (profesyoneller için) – Yazılım geliştiriciler kod yazımını hızlandırmak için Gen AI kullanıyor.\n6️⃣ Fikir üretme – Yaratıcı projelerde ilham almak için Gen AI’ye başvuruluyor.\n7️⃣ Eğlence ve saçmalık – Kullanıcılar, eğlenmek ve yaratıcı oyunlar için Gen AI ile etkileşime geçiyor.\n8️⃣ Kodu iyileştirme (profesyoneller için) – Kod kalitesini artırmak isteyenler Gen AI’den faydalanıyor.\n9️⃣ Yaratıcılık – Sanat ve tasarım gibi alanlarda Gen AI yaratıcı süreçleri destekliyor.\n🔟 Daha sağlıklı yaşam – Kullanıcılar, sağlıklı yaşam alışkanlıkları geliştirmek için Gen AI’den yardım alıyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#amaç-ve-anlam-arayışı",
+    "href": "posts/genai/index.html#amaç-ve-anlam-arayışı",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Amaç ve Anlam Arayışı",
+    "text": "Amaç ve Anlam Arayışı\nGen AI, kullanıcıların kendilerini gerçekleştirme yolculuklarında önemli bir rol oynuyor. İnsanlar, yapay zekayı yalnızca teknik görevler için değil, hayatlarına anlam katmak ve amaç bulmak için kullanıyor. “Hayatımı düzenleme” ve “kişisel hedeflerime ulaşma” gibi senaryolar, Gen AI’nin verimlilikten öte, derin bir insan deneyimi sunduğunu gösteriyor. Bu, teknolojinin bireylerin içsel motivasyonlarına hitap ettiğini kanıtlıyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#kendi-başımıza-düşünmek",
+    "href": "posts/genai/index.html#kendi-başımıza-düşünmek",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Kendi Başımıza Düşünmek",
+    "text": "Kendi Başımıza Düşünmek\nGen AI, kullanıcıların daha bilinçli ve eleştirel düşünmesine olanak tanıyor. 2025’te insanlar, yapay zekanın yanıtlarını sorguluyor ve kendi karar alma süreçlerini desteklemek için kullanıyor. Zincirleme düşünce gibi özellikler, karmaşık sorunlara derinlemesine yaklaşımı teşvik ediyor. Bu, Gen AI’nin bir otorite değil, düşünceyi zenginleştiren bir ortak olarak görüldüğünü ortaya koyuyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#daha-bilgili-kullanıcılar",
+    "href": "posts/genai/index.html#daha-bilgili-kullanıcılar",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Daha Bilgili Kullanıcılar",
+    "text": "Daha Bilgili Kullanıcılar\n2025’te kullanıcılar, Gen AI’nin sınırlarını ve önyargılarını daha iyi anlıyor. 2024 ABD seçim yılında, yapay zeka yanıtlarının siyasi olarak taraflı veya aşırı hassas olduğu yönündeki algı yaygınlaştı. Bu durum, bazı kullanıcıların yapay zeka hizmetlerine olan güvenini sarsarak aboneliklerini sonlandırmalarına yol açtı. Ancak bu şüphecilik, teknolojinin değerini gölgelemiyor. Kullanıcılar, Gen AI’yi bilinçli bir şekilde kullanıyor, kişisel ve iş ihtiyaçları için özelleştirilmiş çözümler talep ediyorlar. Kullanım senaryoları, bu iki alan arasında eşit dağılıyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#sırada-ne-var",
+    "href": "posts/genai/index.html#sırada-ne-var",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Sırada Ne Var?",
+    "text": "Sırada Ne Var?\nGen AI’nin geleceği, erişim ve güven arasındaki dengeye bağlı. Maliyetlerin düşmesi ve yeni özelliklerin eklenmesiyle teknoloji daha geniş kitlelere ulaşıyor. Kullanıcıların agentik davranış beklentisi, yani yapay zekanın bilgi vermekten ziyade görevleri yerine getirmesi, geliştiriciler için yeni bir odak noktası. Örneğin, abonelik iptali gibi pratik görevlerin otomatikleştirilmesi, Gen AI’nin daha işlevsel hale geleceğini gösteriyor. İş dünyasında içerik üretiminden pazar araştırmasına kadar süreçler dönüşürken, bireyler için duygusal destek ve kişisel gelişim aracı olarak önemini koruyacak. Gen AI, insan odaklı bir yaklaşımla, zihinsel ve duygusal ihtiyaçlara hitap eden bir gelecek vaat ediyor."
+  }
+]
