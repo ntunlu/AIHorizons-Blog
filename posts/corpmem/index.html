@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Naim Teoman Ünlü">
+<meta name="description" content="Günümüzde yapay zekâ (YZ) teknolojileri, farklı sektörlerde karar alma süreçlerinden otomasyona kadar pek çok alanda devrim yaratmaktadır. Ancak YZ sistemlerinin başarısı, yalnızca algoritmaların karmaşıklığına ya da donanım gücüne değil, aynı zamanda sahip olduğu bilgiye ve bu bilginin nasıl yönetildiğine de bağlıdır. Bu noktada bilgi yönetimi (knowledge management – KM) ve kurumsal hafızanın korunması, yapay zekâ destekli kurumsal sistemlerin etkililiğinde ön plana çıkmaktadır.">
+
+<title>Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması – AIHorizons- by NTU</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-df479d6c4d77d0e0dfbcb5361179d7fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sonuç yok",
+    "search-matching-documents-text": "eşleşen belgeler",
+    "search-copy-link-title": "Aramak için bağlantıyı kopyalayın",
+    "search-hide-matches-text": "Ek eşleşmeleri gizle",
+    "search-more-match-text": "bu belgede daha fazla eşleşme",
+    "search-more-matches-text": "bu belgede daha fazla eşleşmeler",
+    "search-clear-button-title": "Temizle",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "İptal et",
+    "search-submit-button-title": "Göndermek",
+    "search-label": "Aramak"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">AIHorizons- by NTU</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Aramak"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Gezinmeyi değiştir" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Ana Sayfa</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Hakkında</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title"><strong>Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması</strong></h1>
+                  <div>
+        <div class="description">
+          Günümüzde yapay zekâ (YZ) teknolojileri, farklı sektörlerde karar alma süreçlerinden otomasyona kadar pek çok alanda devrim yaratmaktadır. Ancak <strong>YZ sistemlerinin başarısı, yalnızca algoritmaların karmaşıklığına ya da donanım gücüne değil, aynı zamanda sahip olduğu bilgiye ve bu bilginin nasıl yönetildiğine de bağlıdır.</strong> Bu noktada <strong>bilgi yönetimi (knowledge management – KM) ve kurumsal hafızanın korunması</strong>, yapay zekâ destekli kurumsal sistemlerin etkililiğinde ön plana çıkmaktadır.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">Knowledge Management</div>
+                <div class="quarto-category">NLP</div>
+                <div class="quarto-category">AI</div>
+                <div class="quarto-category">Expert Opinion</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Yazar</div>
+      <div class="quarto-title-meta-contents">
+               <p>Naim Teoman Ünlü </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Yayınlanma Tarihi</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">7 Mayıs 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<blockquote class="blockquote">
+<p><strong>Sesli Dinle</strong></p>
+<audio controls="">
+<source src="CorporateMem.mp3" type="audio/mpeg">
+<p>Your browser does not support the audio element. </p>
+</audio></blockquote>
+<section id="bilgi-yönetimi-ve-yapay-zeka" class="level2">
+<h2 class="anchored" data-anchor-id="bilgi-yönetimi-ve-yapay-zeka">Bilgi Yönetimi ve Yapay Zeka</h2>
+<p>Bilgi yönetimi, bir organizasyonun bilgi varlıklarını toplama, düzenleme, paylaşma ve kullanma süreçlerini ifade eder. <strong>Yapay zekâ açısından bakıldığında ise bu kavram, sistemin öğrenebileceği, genelleyebileceği ve mantıksal çıkarımlar yapabileceği bilgi kaynaklarının etkili şekilde sunulması anlamına gelir.</strong> Bir yapay zekâ modelinin eğitilmesinde kullanılan veriler ne kadar kaliteli, güncel ve bağlamsal olarak doğruysa, modelin çıktıları da o denli güvenilir olur.</p>
+<p>YZ destekli sistemlerde bilgi yönetimi üç ana açıdan önem taşır. Birincisi, <strong>doğru bilgiye erişim</strong>; çünkü YZ sistemleri, geçmiş veriler ve uzman bilgileri olmadan anlamlı öğrenme gerçekleştiremez. İkincisi, <strong>bilginin sürekliliği ve güncelliği</strong>; dinamik sektörlerde değişen bilgiler ışığında sistemin yeniden öğrenmesi ya da adapte olması gerekebilir. Üçüncüsü ise, <strong>kurumsal hafızanın korunması</strong>; bilgi yönetimi sayesinde YZ sistemleri, bireysel çalışanlara bağımlı kalmadan kurumsal bilgiyi sürdürebilir hale gelir.</p>
+</section>
+<section id="kurumsal-hafıza-ve-yapay-zeka" class="level2">
+<h2 class="anchored" data-anchor-id="kurumsal-hafıza-ve-yapay-zeka">Kurumsal Hafıza ve Yapay Zeka</h2>
+<p>Kurumsal hafıza, <strong>bir organizasyonun yıllar boyunca edindiği bilgi, deneyim, süreç ve uygulamaların bütünüdür.</strong> Bu hafıza; <strong>çalışanların tecrübeleri, belgeler, veri tabanları, politikalar ve yazılı olmayan bilgiler aracılığıyla oluşur.</strong> Kurumların sürdürülebilirliği, <strong>öğrenen organizmalar haline gelebilmesi ve geçmiş hatalardan ders çıkarabilmesi için kurumsal hafızanın korunması kritik öneme sahiptir.</strong> Bu bağlamda, yapay zekâ teknolojileri kurumsal hafızanın korunması ve etkili biçimde kullanılmasında güçlü bir araç haline gelmiştir.</p>
+<p>Günümüzde birçok kurum, <strong>çalışan değişimleri, organizasyonel dönüşümler ve bilgi dağınıklığı nedeniyle bilgi kaybı riskiyle karşı karşıyadır.</strong> Emeklilik, istifa ya da departmanlar arası geçiş gibi nedenlerle çalışanlarla birlikte <strong>bilgi de kaybolabilmekte veya kurum dışına çıkabilmektedir.</strong> Yapay zekâ sistemleri, bu dağınık ya da dağılma riski taşıyan bilgiyi <strong>düzenli biçimde toplayarak, sınıflandırarak ve erişilebilir hale getirerek</strong> kurumsal hafızanın dijital olarak korunmasına katkı sağlar.</p>
+<p>Özellikle doğal dil işleme (NLP) tabanlı sistemler, <strong>çalışanların e-postaları, toplantı notları, belgeler ya da geribildirimler gibi yapılandırılmamış veri kaynaklarındaki bilgileri analiz ederek</strong> kuruma özgü bilgi kümeleri oluşturabilir. Bu sayede geçmişte alınmış kararlar, uygulanmış stratejiler ya da müşteriyle yaşanmış deneyimler sistematik hale getirilir. Chatbot’lar ve bilgi yönetim asistanları da bu bilgiler aracılığıyla yeni çalışanlara rehberlik edebilir, kurum içi eğitim süreçlerini destekleyebilir.</p>
+<p>Kurumsal hafızanın dijitalleştirilmesi <strong>yalnızca bilgiye erişimi kolaylaştırmakla kalmaz, aynı zamanda kurumsal kültürün sürekliliğini de sağlar.</strong> Yapay zekâ sayesinde bilgi yalnızca saklanmaz, aynı zamanda yeniden kullanılabilir hale gelir. Örneğin, geçmişte benzer bir projede karşılaşılan sorunların nasıl çözüldüğüne dair bilgiler, yeni projelerde tekrar eden hataları önleyebilir. Bu da zaman, maliyet ve kalite açısından önemli kazanımlar sağlar.</p>
+<p>Elbette yapay zekânın kurumsal hafızaya katkısı yalnızca teknik bir mesele değildir; bu süreçte etik, şeffaflık ve veri güvenliği gibi konular da göz önünde bulundurulmalıdır. <strong>Bilginin doğru, güncel ve bağlamına uygun şekilde kullanılabilmesi için iyi bir bilgi yönetimi stratejisiyle desteklenmesi gerekir.</strong></p>
+<p>Sonuç olarak, <strong>yapay zekâ kurumsal hafızanın sadece korunmasına değil, aynı zamanda aktif olarak kullanılmasına da olanak tanır.</strong> Bilginin sürdürülebilir biçimde aktarılmasını sağlamak, kurumların rekabet gücünü artırır, adaptasyon yeteneğini geliştirir ve <strong>öğrenen organizmalar</strong> haline gelmelerini kolaylaştırır. Bu nedenle, <strong>yapay zekâ yatırımları yalnızca verimlilik için değil, kurumsal hafızayı geleceğe taşıyabilmek için de stratejik bir öneme sahiptir.</strong></p>
+</section>
+<section id="yapay-zekâ-ile-kurumsal-hafıza-yönetimi-uygulamaya-dönük-yaklaşım" class="level1">
+<h1>Yapay Zekâ ile Kurumsal Hafıza Yönetimi: Uygulamaya Dönük Yaklaşım</h1>
+<p>Aşağıda, kurumsal hafızanın yapay zekâ ile nasıl etkili bir şekilde yönetilebileceğini, genel hatlarıyla adım adım ortaya koyan, uygulamaya dönük bir yaklaşım yer almaktadır.</p>
+<p><img src="processflow.png" class="img-fluid" width="366"></p>
+<section id="bilgi-kaynaklarının-belirlenmesi" class="level2">
+<h2 class="anchored" data-anchor-id="bilgi-kaynaklarının-belirlenmesi">1️⃣ Bilgi Kaynaklarının Belirlenmesi</h2>
+<p><strong>Amaç:</strong> Kurum içindeki mevcut bilgi kaynaklarının haritalanması.</p>
+<p>• E-posta, toplantı notları, sunumlar, PDF belgeler, kurum içi wiki’ler, alan uzmanı bilgileri, veritabanları gibi yapılandırılmış ve yapılandırılmamış tüm bilgi kaynakları belirlenir.</p>
+<p>• Bu kaynakların hangi departmanlar tarafından kullanıldığı ve hangi sıklıkla güncellendiği tespit edilir.</p>
+</section>
+<section id="bilginin-toplanması-ve-dijitalleştirilmesi" class="level2">
+<h2 class="anchored" data-anchor-id="bilginin-toplanması-ve-dijitalleştirilmesi">2️⃣ Bilginin Toplanması ve Dijitalleştirilmesi</h2>
+<p><strong>Amaç:</strong> Dağınık bilgilerin merkezi ve işlenebilir hale getirilmesi.</p>
+<p>• OCR (optik karakter tanıma) teknolojileri ile fiziki veya PDF halindeki belgeler dijitalleştirilir.</p>
+<p>• API ve entegrasyonlar kullanılarak e-posta sistemleri, dosya paylaşım platformları, ERP sistemleri gibi kaynaklardan veri çekilir.</p>
+<p>• Veri gölü ya da bilgi deposu oluşturularak bilgiler tek yerde toplanır.</p>
+</section>
+<section id="yapay-zekâ-ile-bilgi-sınıflandırma-ve-anlamlandırma" class="level2">
+<h2 class="anchored" data-anchor-id="yapay-zekâ-ile-bilgi-sınıflandırma-ve-anlamlandırma">3️⃣ Yapay Zekâ ile Bilgi Sınıflandırma ve Anlamlandırma</h2>
+<p><strong>Amaç:</strong>Toplanan bilginin otomatik olarak sınıflandırılması ve erişilebilir hale getirilmesi.</p>
+<p>• NLP (doğal dil işleme) algoritmaları kullanılarak belgelerdeki anahtar kavramlar, konu başlıkları ve ilişkilendirmeler çıkarılır.</p>
+<p>• Bilgi türüne göre etiketleme yapılır. Örneğin; “müşteri şikayeti,” “proje öğrenimi,” “teknik çözüm,” “önemli karar.”</p>
+<p>• Benzer içeriklerin gruplanması ve bağlamsal öneriler sunulması sağlanır. (örneğin; geçmişte benzer bir müşteri sorununu hangi ekip nasıl çözmüş?).</p>
+</section>
+<section id="kurumsal-bilgiye-erişim-arayüzlerinin-kurulması" class="level2">
+<h2 class="anchored" data-anchor-id="kurumsal-bilgiye-erişim-arayüzlerinin-kurulması">4️⃣ Kurumsal Bilgiye Erişim Arayüzlerinin Kurulması</h2>
+<p><strong>Amaç:</strong> Bilgiyi arayan kişilerin hızlı, doğru ve ihtiyaçlarına uygun şekilde erişebilmesi.</p>
+<p>• Akıllı arama motorları ve doğal dilde sorgulama destekli sistemler geliştirilir.</p>
+<p>• Kullanıcılar, chatbot veya sanal asistanlar aracılığıyla geçmiş kararları ya da örnek olayları sorgulayabilir.</p>
+<p>• Yeni çalışanlar için rehberlik sunan sistemler devreye alınır. (örneğin; yeni çalışan asistanı).</p>
+</section>
+<section id="sürekli-öğrenme-ve-güncelleme-mekanizmaları" class="level2">
+<h2 class="anchored" data-anchor-id="sürekli-öğrenme-ve-güncelleme-mekanizmaları">5️⃣ Sürekli Öğrenme ve Güncelleme Mekanizmaları</h2>
+<p><strong>Amaç:</strong> Kurumsal hafızanın güncel ve dinamik kalmasını sağlamak.</p>
+<p>• Çalışanlardan gelen yeni belge, e-posta veya içeriklerin belirli kurallarla sisteme eklenmesi sağlanır.</p>
+<p>• Geri bildirim mekanizmaları kurularak yapay zekânın önerileri iyileştirilir.</p>
+<p>• Eski veya geçersiz bilgilerin sistemden çıkarılması için otomatik arşivleme ve versiyonlama uygulanır.</p>
+</section>
+<section id="güvenlik-ve-yetkilendirme" class="level2">
+<h2 class="anchored" data-anchor-id="güvenlik-ve-yetkilendirme">6️⃣ Güvenlik ve Yetkilendirme</h2>
+<p><strong>Amaç:</strong> Kurumsal bilgilerin gizliliğini ve bütünlüğünü korumak.</p>
+<p>• Rol bazlı erişim kontrolü uygulanır. (herkes her bilgiye ulaşamaz).</p>
+<p>• Hassas içerikler için anonimleştirme, şifreleme ve iz kayıtları tutulur.</p>
+<p>• Yasal ve etik ilkelerle uyum gözetilir. (örneğin; kişisel verilerin korunması).</p>
+</section>
+</section>
+<section id="örnek-uygulama-kurumsal-hafızalı-proje-yönetimi-sistemi-tasarımı" class="level1 panel panel-info" style="background-color: #d4edda;">
+<h1>Örnek Uygulama: Kurumsal Hafızalı Proje Yönetimi Sistemi Tasarımı</h1>
+<p><strong>Kurumsal hafızayı yapay zekâ destekli bir yapı ile entegre eden bir proje yönetimi sistemi tasarlamak</strong>, organizasyonların bilgi birikimini sürdürülebilir kılmak ve projelerde tekrar eden hataları önlemek açısından kritik bir adımdır. Bu sistemin tasarımı, stratejik planlama ve yapılandırılmış bir yol haritası gerektirir.</p>
+<p>Aşağıda, <strong>yapay zekâ destekli kurumsal hafızanın entegre edildiği bir proje yönetimi sisteminin nasıl tasarlanacağına dair uygulanabilir bir yol haritası yer almaktadır:</strong></p>
+<section id="ihtiyaç-ve-hedef-belirleme" class="level2">
+<h2 class="anchored" data-anchor-id="ihtiyaç-ve-hedef-belirleme">🎯 İhtiyaç ve Hedef Belirleme</h2>
+<p><strong>Nereden başlanmalı?</strong></p>
+<p>Proje yönetiminde hangi sorunları çözmek istediğinizi netleştirin.</p>
+<p><strong>Nasıl yapılmalı?</strong></p>
+<p>• Mevcut proje yönetim süreçlerini analiz edin.</p>
+<p>• Sık karşılaşılan hatalar, bilgi kayıpları, tekrar eden sorunları listeleyin.</p>
+<p>• Kurumsal hafızadan hangi bilgilerin eksik ya da erişilemez olduğunu tespit edin.</p>
+<p>• Nihai hedefi belirleyin. Örneğin; “benzer hataları önlemek”, “bilgi paylaşımını artırmak”, “yeni çalışanların adaptasyon süresini kısaltmak”.</p>
+</section>
+<section id="bilgi-kaynaklarının-haritalanması" class="level2">
+<h2 class="anchored" data-anchor-id="bilgi-kaynaklarının-haritalanması">🗺️ Bilgi Kaynaklarının Haritalanması</h2>
+<p><strong>Nereden başlanmalı?</strong></p>
+<p>Kurumda proje bilgilerini barındıran kaynakların nerede olduğunu belirleyin.</p>
+<p><strong>Nasıl yapılmalı?</strong></p>
+<p>• Proje dosyaları, e-postalar, ERP sistemleri, toplantı notları, dosya sunucuları gibi tüm bilgi kaynaklarını haritalayın.</p>
+<p>• Hangi tür bilginin hangi formatta tutulduğunu ve kimlerin kullandığını belgeleyin.</p>
+<p>• Bu kaynaklara nasıl erişileceğini ve entegrasyon ihtiyacını analiz edin.</p>
+</section>
+<section id="kurumsal-hafıza-modelinin-tasarımı" class="level2">
+<h2 class="anchored" data-anchor-id="kurumsal-hafıza-modelinin-tasarımı">🧠 Kurumsal Hafıza Modelinin Tasarımı</h2>
+<p><strong>Nereden başlanmalı?</strong></p>
+<p>Bilginin nasıl sınıflandırılacağına ve yapının nasıl organize edileceğine karar verin.</p>
+<p><strong>Nasıl yapılmalı?</strong></p>
+<p>• “Proje türü”, “departman”, “öğrenilmiş dersler”, “risk kategorileri” gibi etiket sistemleri oluşturun.</p>
+<p>• Ontoloji ya da bilgi haritası tasarlayın. (Örnek: “Tüm Projeler → Savunma Projeleri → Radar Simülasyon Projeleri→ Yüksek Frekanslı Radar İz Takip Simülatörü”).</p>
+<p>• Gelecekteki aramalara uygun bilgi mimarisi kurun.</p>
+</section>
+<section id="teknoloji-seçimi-ve-mimarinin-belirlenmesi" class="level2">
+<h2 class="anchored" data-anchor-id="teknoloji-seçimi-ve-mimarinin-belirlenmesi">🛠️ Teknoloji Seçimi ve Mimarinin Belirlenmesi</h2>
+<p><strong>Nereden başlanmalı?</strong></p>
+<p>Sistemin üzerine kurulacağı teknolojik çerçeveyi belirleyin.</p>
+<p><strong>Nasıl yapılmalı?</strong></p>
+<p>• Kullanılacak yapay zekâ bileşenlerini belirleyin:</p>
+<p>• NLP modeli (metin analizi için)</p>
+<p>• Bilgi tabanı yönetimi</p>
+<p>• Arama motoru</p>
+<p>• Chatbot / Soru-cevap sistemi</p>
+<p>• Bulut mu yerel mi kullanılacağına karar verin.</p>
+<p>• Güvenlik, yetkilendirme ve veri erişim ihtiyaçlarını da dahil edin.</p>
+</section>
+<section id="prototip-geliştirme-ve-test" class="level2">
+<h2 class="anchored" data-anchor-id="prototip-geliştirme-ve-test">🧪 Prototip Geliştirme ve Test</h2>
+<p><strong>Nereden başlanmalı?</strong></p>
+<p>Küçük, sınırlı bir proje grubunu pilot proje olarak seçin.</p>
+<p><strong>Nasıl yapılmalı?</strong></p>
+<p>• Geçmişte yapılmış birkaç projeyi sisteme yükleyin.</p>
+<p>• Bilgi sınıflandırması ve arama işlevlerini test edin.</p>
+<p>• Kullanıcılardan geri bildirim alın. Neyi bulmakta zorlandılar? sistem önerileri işe yarıyor mu?</p>
+</section>
+<section id="eğitim-ve-kullanıcı-katılımı" class="level2">
+<h2 class="anchored" data-anchor-id="eğitim-ve-kullanıcı-katılımı">👥 Eğitim ve Kullanıcı Katılımı</h2>
+<p><strong>Nereden başlanmalı?</strong></p>
+<p>Sistemi kullanacak kişilerin alışkanlıklarını değiştirmeye hazır olup olmadığını anlayın.</p>
+<p><strong>Nasıl yapılmalı?</strong></p>
+<p>• Proje yöneticilerine sistemin ne sağladığını anlatan kısa eğitimler verin.</p>
+<p>• Yeni projelerde sistemi nasıl kullanacaklarına dair pratik senaryolar gösterin.</p>
+<p>• Kullanıcı katkısını teşvik edin: “bu projede öğrendiklerinizi girin, sizden sonrakiler faydalansın” yaklaşımı.</p>
+</section>
+<section id="devamlılık-ve-gelişim-planı" class="level2">
+<h2 class="anchored" data-anchor-id="devamlılık-ve-gelişim-planı">🔄 Devamlılık ve Gelişim Planı</h2>
+<p><strong>Nereden başlanmalı?</strong></p>
+<p>Sistemin canlıya geçmesinden sonra nasıl güncel tutulacağını planlayın.</p>
+<p><strong>Nasıl yapılmalı?</strong></p>
+<p>• Yeni projelerin sistemle entegre edilmesini otomatik hale getirin.</p>
+<p>• Bilgi güncelleme ve arşivleme politikaları belirleyin.</p>
+<p>• Sistem geri bildirimlerine göre NLP modelini zamanla iyileştirin.</p>
+<p><strong>Bu yapı, kurumların proje bazlı çalışmalarda geçmiş deneyimlerden öğrenmesini, bilgi kaybını önlemesini ve karar alma süreçlerinde daha isabetli adımlar atmasını sağlar.</strong></p>
+</section>
+</section>
+<section id="sonuç-kurumsal-hafızayı-geleceğe-taşımada-yapay-zekânın-stratejik-rolü" class="level1">
+<h1>Sonuç: Kurumsal Hafızayı Geleceğe Taşımada Yapay Zekânın Stratejik Rolü</h1>
+<p><strong>Kurumsal bilgi, bir kurumun en değerli varlıklarından biridir; ancak bu bilginin sürdürülebilirliği, sistematik bir şekilde toplanması, anlamlandırılması ve paylaşılmasıyla mümkündür.</strong> Yapay zekâ teknolojileri, yalnızca bu süreci otomatikleştirmekle kalmaz; aynı zamanda <strong>bilginin bağlam içinde yeniden kullanılmasını, geçmiş deneyimlerin yeni projelere ışık tutmasını ve bireysel hafızaların kurumsallaştırılmasını sağlar.</strong></p>
+<p>Bu yazıda adım adım aktarılan yaklaşım, <strong>kurumların kendi bilgi ekosistemlerini analiz etmesini, bu bilgilerden stratejik değer üretmesini ve bunları merkezi bir sistem altında erişilebilir hale getirmesini</strong> mümkün kılmaktadır. <strong>Doğal dil işleme, semantik arama, chatbot tabanlı erişim ve bilgi sınıflandırma gibi teknolojiler, bu dönüşümün temel yapı taşlarını oluşturmaktadır.</strong></p>
+<p><strong>Yapay zekâ destekli kurumsal hafıza yönetimi, sadece bugünün değil, geleceğin de rekabet avantajını belirleyen unsurlardan biri olacaktır</strong>. Bu nedenle, bu sistemlerin yalnızca teknolojik değil; kültürel, organizasyonel ve etik açıdan da kurumsal stratejiye entegre edilmesi büyük önem taşımaktadır. Doğru bir başlangıç, sürdürülebilir bir güncelleme politikası ve kullanıcı odaklı uygulama yaklaşımları ile <strong>yapay zekâ, kurumların deneyimlerini bilgiye, bilgiyi de değere dönüştürmesinde vazgeçilmez bir ortak olacaktır.</strong></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopyalandı");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopyalandı");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

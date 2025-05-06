@@ -2,6 +2,7 @@
   {
     "listing": "/index.html",
     "items": [
+      "/posts/corpmem/index.html",
       "/posts/genai/index.html",
       "/posts/jepa/index.html"
     ]
