@@ -1,0 +1,408 @@
+[
+  {
+    "objectID": "posts/moe/index.html",
+    "href": "posts/moe/index.html",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element."
+  },
+  {
+    "objectID": "posts/moe/index.html#mixture-of-experts-moe-mimarisi-nedir",
+    "href": "posts/moe/index.html#mixture-of-experts-moe-mimarisi-nedir",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "Mixture of Experts (MoE) Mimarisi Nedir?",
+    "text": "Mixture of Experts (MoE) Mimarisi Nedir?\nMixture of Experts (MoE),büyük ölçekli derin öğrenme modellerinin tüm bileşenlerini aynı anda çalıştırmak yerine, sadece belirli görevler için özelleşmiş alt bileşenlerin—yani uzman ağların—etkinleştirilmesine dayanan bir yapay zekâ mimarisidir.\nBu yaklaşıma göre her bir girdi (örneğin bir kelime, cümle veya görsel öge), tüm modelin işleminden geçmek yerine yalnızca o girdiye özgü bilgi işleme kapasitesi yüksek olan birkaç uzman alt ağına yönlendirilir. Böylece, model yalnızca gerekli uzmanları devreye sokarak hem hesaplama yükünü azaltır hem de işlem süresini optimize eder. Bu seçici aktivasyon, büyük parametreli modellerin ön eğitim ve çıkarım süreçlerinde önemli ölçüde verimlilik sağlamaktadır.\n\n\n\n\n\nMoE mimarisinin kökeni, Jordan ve Jacobs tarafından 1991 yılında önerilen “Adaptive Mixture of Local Experts” çalışmasına dayanmaktadır. Bu çalışmada, her biri farklı veri alt kümelerinde uzmanlaşmış çok sayıda alt ağdan oluşan bir sistem sunulmuş; bu sistemde hem uzmanlar, hem de girdiyi hangi uzmana yönlendireceğini öğrenen bir geçit ağı (gating network) birlikte eğitilmiştir. Elde edilen deneysel sonuçlar, bu yapının klasik tekil modellere kıyasla aynı doğruluk seviyesine, daha az sayıda eğitim döngüsü ile ulaşabildiğini ortaya koymuştur.\nÜretken yapay zekâ ve büyük dil modellerinin (LLM) hızla yaygınlaşmasıyla birlikte, model boyutları yüz milyarlarca parametreyi aşarken, MoE (Mixture of Experts) mimarileri toplam parametre kapasitesini trilyon düzeyine çıkararak ölçeklenebilirlik ve işlem verimliliği açısından kritik bir çözüm olarak öne çıkmaktadır."
+  },
+  {
+    "objectID": "posts/moe/index.html#derin-öğrenmede-mixture-of-experts-moe-yaklaşımı",
+    "href": "posts/moe/index.html#derin-öğrenmede-mixture-of-experts-moe-yaklaşımı",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "Derin Öğrenmede Mixture of Experts (MoE) Yaklaşımı",
+    "text": "Derin Öğrenmede Mixture of Experts (MoE) Yaklaşımı\nGünümüz derin öğrenme modelleri, çok katmanlı ve birbirine bağlı yapay sinir ağları yapısıyla yapılandırılmıştır. Bu modellerde her bir nöron, önceki katmandan gelen girdilere bir aktivasyon fonksiyonu uygulayarak çıktısını bir sonraki katmana iletir. Modelin öğrenme yetisi, bu katmanlar arasındaki bağlantılarda bulunan parametreler—yani ağırlıklar ve bias terimleri—aracılığıyla sağlanır. Öğrenme süreci, bu parametrelerin hedef çıktılara yönelik doğru tahminleri maksimize edecek şekilde optimize edilmesiyle gerçekleşir; bu amaçla genellikle gradyan inişi (gradient descent) gibi optimizasyon yöntemleri kullanılır.\nBununla birlikte, modelin parametre sayısının artması, kuramsal kapasitesini ve ifade gücünü yükseltirken, aynı zamanda hesaplama maliyetlerinde de ciddi bir artışa yol açmaktadır. Geleneksel yoğun (dense) yapılarda, her bir giriş örneği için tüm ağ yapısı aktif hâle gelir. Bu durum, model performansı ile işlem verimliliği arasında kaçınılmaz bir denge kurulmasını zorunlu kılar.\nMoE mimarileri ise bu denge sorununa koşullu hesaplama (conditional computation) yaklaşımıyla çözüm sunmaktadır. Bu yöntemde, her bir giriş yalnızca ilgili ve görevle en uyumlu birkaç uzman modüle yönlendirilir; böylece ağ genelinde seyrek (sparse) bir aktivasyon sağlanır. Sonuç olarak, modelin toplam parametre sayısı artırılsa dahi, aktif hesaplama, yalnızca sınırlı sayıdaki uzmanla gerçekleştirildiği için işlem maliyeti sabit tutulabilir. Bu yaklaşım, özellikle büyük ölçekli modellerde hem verimlilik hem de ölçeklenebilirlik açısından önemli avantajlar sunmaktadır."
+  },
+  {
+    "objectID": "posts/moe/index.html#moe-yapısının-temel-bileşenleri",
+    "href": "posts/moe/index.html#moe-yapısının-temel-bileşenleri",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "MOE Yapısının Temel Bileşenleri",
+    "text": "MOE Yapısının Temel Bileşenleri\n1. Expert (Uzman) Alt Ağlar\nHer biri bir transformer bloğu veya küçük bir model gibi çalışan, farklı görevlerde uzmanlaşabilen alt ağlardır. MoE’de genellikle 8–16 uzman barındırılır, ancak bunların yalnızca birkaç tanesi aktif hale gelir . Örneğin bazı uzmanlar matematiksel işlemlerde, bazıları şiir üretiminde, bazıları ise kod yazımında daha başarılı olabilir.\nÖrneğin Mixtral 8x7B’de her uzman farklı türde cümleleri veya görevleri öğrenmiş olabilir. Aşağıdaki örneklerle açıklamaya çalışalım:\n\n\n\n\n\n\nMixtral 8x7B Örnekler\n\n\n\nÖrnek 1: Matematik Uzmanı\nGirdi: “Bir üçgenin iç açıları toplamı kaç derecedir?”\nBu cümle matematiksel bilgi içerdiği için yönlendirici büyük ihtimalle “Matematik Uzmanı” olan Expert 3 ve belki “Bilgi Anlamlandırma Uzmanı” olan Expert 6’yı seçer.\nBu uzmanlar zamanla bu tür hesaplamalı veya mantıksal cümleleri çözmede iyi hale gelmiştir.\nÖrnek 2: Günlük Sohbet / Diyalog Uzmanı\nGirdi: “Bugün nasılsın?”\nBu tür sohbet dili için model büyük ihtimalle “Diyalog Uzmanı” olan Expert 2 ve belki “Sentiment Analizi Uzmanı” olan Expert 5’i seçer. Bu uzmanlar daha önce sohbet verileriyle eğitilmiş oldukları için, bu dil tarzını daha iyi işlerler.\nÖrnek 3: Kod Yazma\nGirdi: “Python’da bir listeyi nasıl sıralarım?”\nBu soru bir yazılım/kodlama içeriği içeriyor. Yönlendirici burada örneğin Expert 1 (kod uzmanı) ve Expert 7’yi seçebilir. Çünkü bu uzmanlar kod verileriyle eğitilmiş, sort(), lambda, for loop gibi yapıları çok iyi tanıyor olabilir.\nÖrnek 4: Fransızca Çeviri\nGirdi: “Comment ça va ?” (Fransızca bir giriş cümlesi)\nYönlendirici bu durumda “Çok dilli uzmanlar” olan Expert 4 ve Expert 6 gibi Fransızca verilerle eğitilmiş uzmanları aktif hale getirir.\n\n\n2. Gating Ağı (Router) (Yönlendirici)\nYönlendirici modülü, verilen girdinin hangi uzmanlara gönderileceğine karar verir. Bunu yaparken, girdi verisini analiz eder ve “top k routing” gibi stratejilerle en uygun uzmanları seçer (örneğin top 2, top 4). Seçim genellikle softmax ağırlıklarıyla yapılır ve her adımda yalnızca birkaç uzman aktif hale getirilir (örneğin 2 uzman seçilir).\n3. Seyrek Aktivasyon (Sparse Activation)\nModelde örneğin 16 uzman varsa, her girdi için sadece 2’si çalıştırılır. Bu da MoE’yi “seyrek” bir yapı haline getirir. Bu sayede,model toplamda devasa bir boyuta sahip olsa da, çalışma zamanında sadece küçük bir kısmı aktif olur."
+  },
+  {
+    "objectID": "posts/moe/index.html#moe-neden-kullanılır",
+    "href": "posts/moe/index.html#moe-neden-kullanılır",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "MoE Neden Kullanılır?",
+    "text": "MoE Neden Kullanılır?\n🔹 Hesaplama Verimliliği\nMoE, çok büyük modellerin sadece küçük bir kısmını çalıştırarak aynı doğrulukta sonuçlar elde etmeyi mümkün kılar. Bu, özellikle inference (çalıştırma-çıkarım) aşamasında gecikmeyi ve enerji tüketimini önemli ölçüde azaltır.\n🔹 Görev Bazlı Uzmanlık\nFarklı alt modüller farklı görevlerde uzmanlaşabilir. Model zamanla hangi girdilerin hangi uzmanlara gitmesi gerektiğini öğrenebilir ve bu da genel performansı artırır.\n🔹 Hataya Tolerans\nHata toleransı artar; bir uzman devre dışı kalsa bile, diğerleri çalışmaya devam eder.\n🔹 Ölçeklenebilirlik\nMoE, toplam parametre sayısını artırarak modelin kapasitesini büyütmeyi mümkün kılar. Ancak inference sırasında bu büyük yapının yalnızca küçük bir parçası kullanıldığından maliyet kontrollü kalır."
+  },
+  {
+    "objectID": "posts/moe/index.html#güncel-moe-tabanlı-modeller-ve-uygulamalar-20232025",
+    "href": "posts/moe/index.html#güncel-moe-tabanlı-modeller-ve-uygulamalar-20232025",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "Güncel MoE Tabanlı Modeller ve Uygulamalar (2023–2025)",
+    "text": "Güncel MoE Tabanlı Modeller ve Uygulamalar (2023–2025)\n1. Mixtral 8x7B – Mistral AI (2023 Q4)\n• 8 uzmanlı bir modeldir.\n• Her bir giriş için yalnızca 2 uzman etkinleştirilir.\n• Toplam parametre sayısı yaklaşık 46 milyar, etkin parametre sayısı ise yalnızca 12.9 milyardır.\n• Açık kaynak olarak sunulmuş ilk başarılı MoE LLM’lerden biridir.\n• Kodlama, mantıksal çıkarım ve doğal dil görevlerinde son derece başarılıdır.\n2. DBRX – Databricks (2024 Q1)\n• 132 milyar parametreye sahiptir.\n• Her token girişi için 4 uzman aktiftir.\n• Ölçek ve hız açısından oldukça iddialıdır.\n• Büyük dil modeli altyapılarına entegre edilebilir durumdadır.\n3. Google Gemini 1.5 Pro (2024)\n• Tam teknik dokümantasyonu paylaşılmamıştır, ancak MoE yapısına yakın dinamik uzmanlaşma mekanizmaları kullanmaktadır.\n• Multimodal girişler (metin, görsel, kod vb.) için farklı uzman modülleri devreye sokulabilmektedir.\n4. OpenMoE – Hugging Face Topluluğu (2024)\n• Eğitim stratejileri, load balancing ve yönlendirici mimarilerini araştırmak için açık kaynak MoE frameworktür.\n• OpenMoE 8B ve 8B Chat, 8 milyar parametre, 4 MoE katmanı, 32 uzmanlı yapıdır. 1.1 trilyon token üzerinden eğitilerek hem ön eğitim hem de SFT (instruct tuning) yapılmıştır.\n• OpenMoE 34B, 34 milyar parametreli modeldir. 8 MoE katmanı ve 32 uzmanla hâlen eğitilmektedir. 200 milyar token’a ulaşmış durumdadır.\n5. Llama 4 – Meta AI (2024)\n• Llama 4’ün Scout ve Maverick versiyonları MoE mimarisi üzerine inşa edilmiştir.\n• Scout: Toplam 109 milyar parametre, 16 uzman içerir. Her token için ortalama 17 milyar parametre aktif olmaktadır.\n• Maverick: Toplam 400 milyar parametre, 128 uzman içerir. Yine yaklaşık 17 milyar parametre aktif olmaktadır.\n• LLaMA ailesinin önceki versiyonlarına kıyasla ölçeklenebilirlik, verimlilik ve bağlamsal tutarlılık açısından önemli iyileştirmeler içerir.\n• Akademik ve endüstriyel kullanımda, özelleştirilmiş uzman modülleri sayesinde farklı görevler için esnek şekilde optimize edilebilir."
+  },
+  {
+    "objectID": "posts/moe/index.html#teknik-zorluklar",
+    "href": "posts/moe/index.html#teknik-zorluklar",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "Teknik Zorluklar",
+    "text": "Teknik Zorluklar\nMoE mimarisi güçlü olsa da çeşitli teknik zorlukları beraberinde getirmektedir:\n🔸 Yönlendirici Öğrenmesi\nYönlendirici modülü yanlış uzmanları seçerse modelin performansı düşer. Bu nedenle yönlendirici eğitimi dikkatle yapılmalıdır.\n🔸 Load Balancing (Yük Dengelemesi)\nBazı uzmanlar çok fazla, bazıları çok az kullanılırsa model dengesiz öğrenir. Bu, performans kaybına ve kaynak israfına yol açabilir. Bu dengesizliği önlemek için entropy tabanlı denge kayıpları kullanılır.\n🔸 Yüksek VRAM (Video Belleği) Gereksinimi:\nMoE’lerin mimarisinden kaynaklanan bir diğer pratik zorluk, yüksek VRAM gereksinimidir. Her ne kadar bir token aynı anda tüm uzmanları etkinleştirmese de, çıkarım veya eğitim sırasında tüm uzmanların parametrelerinin belleğe yüklenmesi gerekmektedir. Bu, özellikle çok sayıda uzmana sahip büyük MoE modelleri için önemli miktarda VRAM gerektirir.\nÖrneğin Mixtral 8x7B FP16 formatıyla çalıştırıldığında yaklaşık 92 GB VRAM veya bunun kadar CPU RAM/VRAM karma ihtiyaç duyulabilmektedir.\nÖzellikle büyük MoE modeller (örneğin Llama 4 Maverick) VRAM ihtiyacı 300–400B parametre için tek GPU’da kullanılamayacak düzeydedir. Küçük ölçekli donanımlarda veya sınırlı bellek kaynaklarına sahip ortamlarda MoE’leri çalıştırmak zorlaşabilir. Bu sorunu hafifletmek için, uzmanları belleğe dinamik olarak yükleme/boşaltma veya uzmanların farklı cihazlara dağıtılması gibi stratejiler geliştirilmektedir.\n🔸 İnce Ayarda (Fine-tuning) Genelleme Zorlukları ve Aşırı Uyum (Overfitting):\nMoE’lerin en önemli sorunlarından biri, ön eğitimden sonraki ince ayar aşamasında ortaya çıkar. Geçmişte, MoE’ler ince ayar sırasında yoğun modellere kıyasla genelleme konusunda zorluklar yaşamış ve belirli veri kümelerine aşırı uyum (overfitting) eğilimi göstermişlerdir. Aşırı uyum, modelin eğitim verilerini çok iyi öğrenmesi ancak yeni, bilinmeyen verilere kötü performans göstermesi anlamına gelir. Bu, MoE’lerin geniş bir uygulama yelpazesinde güvenilir bir şekilde kullanılmasını engelleyebilir. Bu sorunun nedenleri ve çözümleri üzerine yoğun araştırmalar devam etmektedir. Potansiyel çözümler arasında daha gelişmiş yönlendirme mekanizmaları, düzenlileştirme teknikleri ve ince ayar için özel optimizasyon stratejileri yer almaktadır.\n🔸 Dağıtık Eğitim Altyapısı\nYüzlerce uzmanı çalıştırmak ve yönetmek, güçlü paralel ve dağıtık altyapılar gerektirir. Özellikle büyük modellerde GPU dağıtımı karmaşık hale gelebilir."
+  },
+  {
+    "objectID": "posts/moe/index.html#moenin-geleceği",
+    "href": "posts/moe/index.html#moenin-geleceği",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "MoE’nin Geleceği",
+    "text": "MoE’nin Geleceği\nMoE, büyük dil modellerinin daha verimli ve uzmanlaşmış hale gelmesi için kritik bir adımdır. Önümüzdeki dönemde:\n• Dinamik MoE yapılarla uzman sayısı koşullara göre değişebilecek,\n• Multimodal MoE sistemlerle metin, görsel ve ses uzmanları birlikte çalışacak,\n• Kendi kendini organize eden uzmanlar ile daha az insan müdahalesiyle uzmanlık oluşacak,\n• Donanım odaklı karar verme ile yönlendirici aynı zamanda kullanılabilir GPU/CPU’ya göre seçim yapabilecektir.\nOpenAI, Google, Meta, Mistral gibi öncü kuruluşlar MoE temelli modeller geliştirmeye devam ederken, bu yapı araştırma ve üretken yapay zekâ alanında devrim yaratmaya aday bir mimari olarak öne çıkmaktadır"
+  },
+  {
+    "objectID": "posts/moe/index.html#sonuç",
+    "href": "posts/moe/index.html#sonuç",
+    "title": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi",
+    "section": "Sonuç:",
+    "text": "Sonuç:\nMixture of Experts (MoE), büyük dil modellerinin hesaplama yükünü hafifletirken uzmanlaşma ve modülerlik kazandıran güçlü bir mimaridir. Büyük dil modellerinin giderek daha fazla alanda kullanılması, bu tür mimarilerin daha da önem kazanmasına neden olmaktadır. Gelecekte, daha stabil, daha modüler ve daha az kaynakla çalışan MoE modellerinin yaygınlaşması beklenmektedir. Maliyet, hız ve doğruluk arasında en iyi dengeyi arayan herkes için, MoE mimarisi kullanılan modeller değerlendirilmesi gereken önemli bir seçenek olarak öne çıkmaktadır."
+  },
+  {
+    "objectID": "posts/genai/index.html",
+    "href": "posts/genai/index.html",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element.\n2025’te Gen AI, teknolojik bir yenilik olmaktan çıkıp pratik bir araca dönüştü. Geçen yıl HBR’nin viral infografiği, kişisel ve profesyonel kullanım arasındaki dengeyi ortaya koymuştu. Bu yıl, kullanım alanları çeşitlenerek duygusal odaklı senaryolar öne çıkıyor. Custom GPT’ler, DeepSeek ve Grok gibi yeni oyuncular, ve Google’ın NotebookLM gibi yenilikçi araçları rekabeti artırdı. OpenAI’nin tek arayüz yaklaşımı kullanım kolaylığı sağlarken, zincirleme düşünce (chain of thought) özelliği derin yanıtlar sunuyor. Sesli komutlar ve düşen maliyetler, Gen AI’yi daha erişilebilir kılıyor. Ayrıca, yapay zeka hakkında aşırı olumlu ya da aşırı olumsuz gelecek beklentileri tartışılırken, büyük dil modellerinin (LLM’ler) tavsiyeden eyleme, yani “agentik davranışa” geçişi öngörülüyor.\n\nHBR’da yayımlanan makaleye buradan erişebilirsiniz."
+  },
+  {
+    "objectID": "posts/genai/index.html#kullanıcılar-şu-anda-neler-yapıyor",
+    "href": "posts/genai/index.html#kullanıcılar-şu-anda-neler-yapıyor",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Kullanıcılar Şu Anda Neler Yapıyor?",
+    "text": "Kullanıcılar Şu Anda Neler Yapıyor?\nKullanıcılar, Gen AI’yi hem iş hem de kişisel hayatlarında yoğun bir şekilde kullanıyor. 100 farklı kullanım senaryosu, altı ana tema altında toplanıyor:\n\n\n“Kişisel ve Profesyonel Destek” en baskın tema olarak öne çıkıyor.En yaygın 10 kullanım senaryosu ise şunlar:\n1️⃣ Terapi ve arkadaşlık – Özellikle ruh sağlığı hizmetlerinin sınırlı olduğu bölgelerde, Gen AI duygusal destek sağlıyor.\n2️⃣ Hayatımı düzenleme – Kullanıcılar günlük görevlerini planlamak için Gen AI’ye yöneliyor.\n3️⃣ Amaç bulma – İnsanlar, yaşamlarına anlam katmak için yapay zekadan destek alıyor.\n4️⃣ Öğrenmeyi geliştirme – Eğitimde Gen AI, öğrenme süreçlerini kişiselleştiriyor.\n5️⃣ Kod üretme (profesyoneller için) – Yazılım geliştiriciler kod yazımını hızlandırmak için Gen AI kullanıyor.\n6️⃣ Fikir üretme – Yaratıcı projelerde ilham almak için Gen AI’ye başvuruluyor.\n7️⃣ Eğlence ve saçmalık – Kullanıcılar, eğlenmek ve yaratıcı oyunlar için Gen AI ile etkileşime geçiyor.\n8️⃣ Kodu iyileştirme (profesyoneller için) – Kod kalitesini artırmak isteyenler Gen AI’den faydalanıyor.\n9️⃣ Yaratıcılık – Sanat ve tasarım gibi alanlarda Gen AI yaratıcı süreçleri destekliyor.\n🔟 Daha sağlıklı yaşam – Kullanıcılar, sağlıklı yaşam alışkanlıkları geliştirmek için Gen AI’den yardım alıyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#amaç-ve-anlam-arayışı",
+    "href": "posts/genai/index.html#amaç-ve-anlam-arayışı",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Amaç ve Anlam Arayışı",
+    "text": "Amaç ve Anlam Arayışı\nGen AI, kullanıcıların kendilerini gerçekleştirme yolculuklarında önemli bir rol oynuyor. İnsanlar, yapay zekayı yalnızca teknik görevler için değil, hayatlarına anlam katmak ve amaç bulmak için kullanıyor. “Hayatımı düzenleme” ve “kişisel hedeflerime ulaşma” gibi senaryolar, Gen AI’nin verimlilikten öte, derin bir insan deneyimi sunduğunu gösteriyor. Bu, teknolojinin bireylerin içsel motivasyonlarına hitap ettiğini kanıtlıyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#kendi-başımıza-düşünmek",
+    "href": "posts/genai/index.html#kendi-başımıza-düşünmek",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Kendi Başımıza Düşünmek",
+    "text": "Kendi Başımıza Düşünmek\nGen AI, kullanıcıların daha bilinçli ve eleştirel düşünmesine olanak tanıyor. 2025’te insanlar, yapay zekanın yanıtlarını sorguluyor ve kendi karar alma süreçlerini desteklemek için kullanıyor. Zincirleme düşünce gibi özellikler, karmaşık sorunlara derinlemesine yaklaşımı teşvik ediyor. Bu, Gen AI’nin bir otorite değil, düşünceyi zenginleştiren bir ortak olarak görüldüğünü ortaya koyuyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#daha-bilgili-kullanıcılar",
+    "href": "posts/genai/index.html#daha-bilgili-kullanıcılar",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Daha Bilgili Kullanıcılar",
+    "text": "Daha Bilgili Kullanıcılar\n2025’te kullanıcılar, Gen AI’nin sınırlarını ve önyargılarını daha iyi anlıyor. 2024 ABD seçim yılında, yapay zeka yanıtlarının siyasi olarak taraflı veya aşırı hassas olduğu yönündeki algı yaygınlaştı. Bu durum, bazı kullanıcıların yapay zeka hizmetlerine olan güvenini sarsarak aboneliklerini sonlandırmalarına yol açtı. Ancak bu şüphecilik, teknolojinin değerini gölgelemiyor. Kullanıcılar, Gen AI’yi bilinçli bir şekilde kullanıyor, kişisel ve iş ihtiyaçları için özelleştirilmiş çözümler talep ediyorlar. Kullanım senaryoları, bu iki alan arasında eşit dağılıyor."
+  },
+  {
+    "objectID": "posts/genai/index.html#sırada-ne-var",
+    "href": "posts/genai/index.html#sırada-ne-var",
+    "title": "Üretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek",
+    "section": "Sırada Ne Var?",
+    "text": "Sırada Ne Var?\nGen AI’nin geleceği, erişim ve güven arasındaki dengeye bağlı. Maliyetlerin düşmesi ve yeni özelliklerin eklenmesiyle teknoloji daha geniş kitlelere ulaşıyor. Kullanıcıların agentik davranış beklentisi, yani yapay zekanın bilgi vermekten ziyade görevleri yerine getirmesi, geliştiriciler için yeni bir odak noktası. Örneğin, abonelik iptali gibi pratik görevlerin otomatikleştirilmesi, Gen AI’nin daha işlevsel hale geleceğini gösteriyor. İş dünyasında içerik üretiminden pazar araştırmasına kadar süreçler dönüşürken, bireyler için duygusal destek ve kişisel gelişim aracı olarak önemini koruyacak. Gen AI, insan odaklı bir yaklaşımla, zihinsel ve duygusal ihtiyaçlara hitap eden bir gelecek vaat ediyor."
+  },
+  {
+    "objectID": "posts/corpmem/index.html",
+    "href": "posts/corpmem/index.html",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#bilgi-yönetimi-ve-yapay-zeka",
+    "href": "posts/corpmem/index.html#bilgi-yönetimi-ve-yapay-zeka",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "Bilgi Yönetimi ve Yapay Zeka",
+    "text": "Bilgi Yönetimi ve Yapay Zeka\nBilgi yönetimi, bir organizasyonun bilgi varlıklarını toplama, düzenleme, paylaşma ve kullanma süreçlerini ifade eder. Yapay zekâ açısından bakıldığında ise bu kavram, sistemin öğrenebileceği, genelleyebileceği ve mantıksal çıkarımlar yapabileceği bilgi kaynaklarının etkili şekilde sunulması anlamına gelir. Bir yapay zekâ modelinin eğitilmesinde kullanılan veriler ne kadar kaliteli, güncel ve bağlamsal olarak doğruysa, modelin çıktıları da o denli güvenilir olur.\nYZ destekli sistemlerde bilgi yönetimi üç ana açıdan önem taşır. Birincisi, doğru bilgiye erişim; çünkü YZ sistemleri, geçmiş veriler ve uzman bilgileri olmadan anlamlı öğrenme gerçekleştiremez. İkincisi, bilginin sürekliliği ve güncelliği; dinamik sektörlerde değişen bilgiler ışığında sistemin yeniden öğrenmesi ya da adapte olması gerekebilir. Üçüncüsü ise, kurumsal hafızanın korunması; bilgi yönetimi sayesinde YZ sistemleri, bireysel çalışanlara bağımlı kalmadan kurumsal bilgiyi sürdürebilir hale gelir."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#kurumsal-hafıza-ve-yapay-zeka",
+    "href": "posts/corpmem/index.html#kurumsal-hafıza-ve-yapay-zeka",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "Kurumsal Hafıza ve Yapay Zeka",
+    "text": "Kurumsal Hafıza ve Yapay Zeka\nKurumsal hafıza, bir organizasyonun yıllar boyunca edindiği bilgi, deneyim, süreç ve uygulamaların bütünüdür. Bu hafıza; çalışanların tecrübeleri, belgeler, veri tabanları, politikalar ve yazılı olmayan bilgiler aracılığıyla oluşur. Kurumların sürdürülebilirliği, öğrenen organizmalar haline gelebilmesi ve geçmiş hatalardan ders çıkarabilmesi için kurumsal hafızanın korunması kritik öneme sahiptir. Bu bağlamda, yapay zekâ teknolojileri kurumsal hafızanın korunması ve etkili biçimde kullanılmasında güçlü bir araç haline gelmiştir.\nGünümüzde birçok kurum, çalışan değişimleri, organizasyonel dönüşümler ve bilgi dağınıklığı nedeniyle bilgi kaybı riskiyle karşı karşıyadır. Emeklilik, istifa ya da departmanlar arası geçiş gibi nedenlerle çalışanlarla birlikte bilgi de kaybolabilmekte veya kurum dışına çıkabilmektedir. Yapay zekâ sistemleri, bu dağınık ya da dağılma riski taşıyan bilgiyi düzenli biçimde toplayarak, sınıflandırarak ve erişilebilir hale getirerek kurumsal hafızanın dijital olarak korunmasına katkı sağlar.\nÖzellikle doğal dil işleme (NLP) tabanlı sistemler, çalışanların e-postaları, toplantı notları, belgeler ya da geribildirimler gibi yapılandırılmamış veri kaynaklarındaki bilgileri analiz ederek kuruma özgü bilgi kümeleri oluşturabilir. Bu sayede geçmişte alınmış kararlar, uygulanmış stratejiler ya da müşteriyle yaşanmış deneyimler sistematik hale getirilir. Chatbot’lar ve bilgi yönetim asistanları da bu bilgiler aracılığıyla yeni çalışanlara rehberlik edebilir, kurum içi eğitim süreçlerini destekleyebilir.\nKurumsal hafızanın dijitalleştirilmesi yalnızca bilgiye erişimi kolaylaştırmakla kalmaz, aynı zamanda kurumsal kültürün sürekliliğini de sağlar. Yapay zekâ sayesinde bilgi yalnızca saklanmaz, aynı zamanda yeniden kullanılabilir hale gelir. Örneğin, geçmişte benzer bir projede karşılaşılan sorunların nasıl çözüldüğüne dair bilgiler, yeni projelerde tekrar eden hataları önleyebilir. Bu da zaman, maliyet ve kalite açısından önemli kazanımlar sağlar.\nElbette yapay zekânın kurumsal hafızaya katkısı yalnızca teknik bir mesele değildir; bu süreçte etik, şeffaflık ve veri güvenliği gibi konular da göz önünde bulundurulmalıdır. Bilginin doğru, güncel ve bağlamına uygun şekilde kullanılabilmesi için iyi bir bilgi yönetimi stratejisiyle desteklenmesi gerekir.\nSonuç olarak, yapay zekâ kurumsal hafızanın sadece korunmasına değil, aynı zamanda aktif olarak kullanılmasına da olanak tanır. Bilginin sürdürülebilir biçimde aktarılmasını sağlamak, kurumların rekabet gücünü artırır, adaptasyon yeteneğini geliştirir ve öğrenen organizmalar haline gelmelerini kolaylaştırır. Bu nedenle, yapay zekâ yatırımları yalnızca verimlilik için değil, kurumsal hafızayı geleceğe taşıyabilmek için de stratejik bir öneme sahiptir."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#bilgi-kaynaklarının-belirlenmesi",
+    "href": "posts/corpmem/index.html#bilgi-kaynaklarının-belirlenmesi",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "1️⃣ Bilgi Kaynaklarının Belirlenmesi",
+    "text": "1️⃣ Bilgi Kaynaklarının Belirlenmesi\nAmaç: Kurum içindeki mevcut bilgi kaynaklarının haritalanması.\n• E-posta, toplantı notları, sunumlar, PDF belgeler, kurum içi wiki’ler, alan uzmanı bilgileri, veritabanları gibi yapılandırılmış ve yapılandırılmamış tüm bilgi kaynakları belirlenir.\n• Bu kaynakların hangi departmanlar tarafından kullanıldığı ve hangi sıklıkla güncellendiği tespit edilir."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#bilginin-toplanması-ve-dijitalleştirilmesi",
+    "href": "posts/corpmem/index.html#bilginin-toplanması-ve-dijitalleştirilmesi",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "2️⃣ Bilginin Toplanması ve Dijitalleştirilmesi",
+    "text": "2️⃣ Bilginin Toplanması ve Dijitalleştirilmesi\nAmaç: Dağınık bilgilerin merkezi ve işlenebilir hale getirilmesi.\n• OCR (optik karakter tanıma) teknolojileri ile fiziki veya PDF halindeki belgeler dijitalleştirilir.\n• API ve entegrasyonlar kullanılarak e-posta sistemleri, dosya paylaşım platformları, ERP sistemleri gibi kaynaklardan veri çekilir.\n• Veri gölü ya da bilgi deposu oluşturularak bilgiler tek yerde toplanır."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#yapay-zekâ-ile-bilgi-sınıflandırma-ve-anlamlandırma",
+    "href": "posts/corpmem/index.html#yapay-zekâ-ile-bilgi-sınıflandırma-ve-anlamlandırma",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "3️⃣ Yapay Zekâ ile Bilgi Sınıflandırma ve Anlamlandırma",
+    "text": "3️⃣ Yapay Zekâ ile Bilgi Sınıflandırma ve Anlamlandırma\nAmaç:Toplanan bilginin otomatik olarak sınıflandırılması ve erişilebilir hale getirilmesi.\n• NLP (doğal dil işleme) algoritmaları kullanılarak belgelerdeki anahtar kavramlar, konu başlıkları ve ilişkilendirmeler çıkarılır.\n• Bilgi türüne göre etiketleme yapılır. Örneğin; “müşteri şikayeti,” “proje öğrenimi,” “teknik çözüm,” “önemli karar.”\n• Benzer içeriklerin gruplanması ve bağlamsal öneriler sunulması sağlanır. (örneğin; geçmişte benzer bir müşteri sorununu hangi ekip nasıl çözmüş?)."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#kurumsal-bilgiye-erişim-arayüzlerinin-kurulması",
+    "href": "posts/corpmem/index.html#kurumsal-bilgiye-erişim-arayüzlerinin-kurulması",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "4️⃣ Kurumsal Bilgiye Erişim Arayüzlerinin Kurulması",
+    "text": "4️⃣ Kurumsal Bilgiye Erişim Arayüzlerinin Kurulması\nAmaç: Bilgiyi arayan kişilerin hızlı, doğru ve ihtiyaçlarına uygun şekilde erişebilmesi.\n• Akıllı arama motorları ve doğal dilde sorgulama destekli sistemler geliştirilir.\n• Kullanıcılar, chatbot veya sanal asistanlar aracılığıyla geçmiş kararları ya da örnek olayları sorgulayabilir.\n• Yeni çalışanlar için rehberlik sunan sistemler devreye alınır. (örneğin; yeni çalışan asistanı)."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#sürekli-öğrenme-ve-güncelleme-mekanizmaları",
+    "href": "posts/corpmem/index.html#sürekli-öğrenme-ve-güncelleme-mekanizmaları",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "5️⃣ Sürekli Öğrenme ve Güncelleme Mekanizmaları",
+    "text": "5️⃣ Sürekli Öğrenme ve Güncelleme Mekanizmaları\nAmaç: Kurumsal hafızanın güncel ve dinamik kalmasını sağlamak.\n• Çalışanlardan gelen yeni belge, e-posta veya içeriklerin belirli kurallarla sisteme eklenmesi sağlanır.\n• Geri bildirim mekanizmaları kurularak yapay zekânın önerileri iyileştirilir.\n• Eski veya geçersiz bilgilerin sistemden çıkarılması için otomatik arşivleme ve versiyonlama uygulanır."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#güvenlik-ve-yetkilendirme",
+    "href": "posts/corpmem/index.html#güvenlik-ve-yetkilendirme",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "6️⃣ Güvenlik ve Yetkilendirme",
+    "text": "6️⃣ Güvenlik ve Yetkilendirme\nAmaç: Kurumsal bilgilerin gizliliğini ve bütünlüğünü korumak.\n• Rol bazlı erişim kontrolü uygulanır. (herkes her bilgiye ulaşamaz).\n• Hassas içerikler için anonimleştirme, şifreleme ve iz kayıtları tutulur.\n• Yasal ve etik ilkelerle uyum gözetilir. (örneğin; kişisel verilerin korunması)."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#ihtiyaç-ve-hedef-belirleme",
+    "href": "posts/corpmem/index.html#ihtiyaç-ve-hedef-belirleme",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "🎯 İhtiyaç ve Hedef Belirleme",
+    "text": "🎯 İhtiyaç ve Hedef Belirleme\nNereden başlanmalı?\nProje yönetiminde hangi sorunları çözmek istediğinizi netleştirin.\nNasıl yapılmalı?\n• Mevcut proje yönetim süreçlerini analiz edin.\n• Sık karşılaşılan hatalar, bilgi kayıpları, tekrar eden sorunları listeleyin.\n• Kurumsal hafızadan hangi bilgilerin eksik ya da erişilemez olduğunu tespit edin.\n• Nihai hedefi belirleyin. Örneğin; “benzer hataları önlemek”, “bilgi paylaşımını artırmak”, “yeni çalışanların adaptasyon süresini kısaltmak”."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#bilgi-kaynaklarının-haritalanması",
+    "href": "posts/corpmem/index.html#bilgi-kaynaklarının-haritalanması",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "🗺️ Bilgi Kaynaklarının Haritalanması",
+    "text": "🗺️ Bilgi Kaynaklarının Haritalanması\nNereden başlanmalı?\nKurumda proje bilgilerini barındıran kaynakların nerede olduğunu belirleyin.\nNasıl yapılmalı?\n• Proje dosyaları, e-postalar, ERP sistemleri, toplantı notları, dosya sunucuları gibi tüm bilgi kaynaklarını haritalayın.\n• Hangi tür bilginin hangi formatta tutulduğunu ve kimlerin kullandığını belgeleyin.\n• Bu kaynaklara nasıl erişileceğini ve entegrasyon ihtiyacını analiz edin."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#kurumsal-hafıza-modelinin-tasarımı",
+    "href": "posts/corpmem/index.html#kurumsal-hafıza-modelinin-tasarımı",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "🧠 Kurumsal Hafıza Modelinin Tasarımı",
+    "text": "🧠 Kurumsal Hafıza Modelinin Tasarımı\nNereden başlanmalı?\nBilginin nasıl sınıflandırılacağına ve yapının nasıl organize edileceğine karar verin.\nNasıl yapılmalı?\n• “Proje türü”, “departman”, “öğrenilmiş dersler”, “risk kategorileri” gibi etiket sistemleri oluşturun.\n• Ontoloji ya da bilgi haritası tasarlayın. (Örnek: “Tüm Projeler → Savunma Projeleri → Radar Simülasyon Projeleri→ Yüksek Frekanslı Radar İz Takip Simülatörü”).\n• Gelecekteki aramalara uygun bilgi mimarisi kurun."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#teknoloji-seçimi-ve-mimarinin-belirlenmesi",
+    "href": "posts/corpmem/index.html#teknoloji-seçimi-ve-mimarinin-belirlenmesi",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "🛠️ Teknoloji Seçimi ve Mimarinin Belirlenmesi",
+    "text": "🛠️ Teknoloji Seçimi ve Mimarinin Belirlenmesi\nNereden başlanmalı?\nSistemin üzerine kurulacağı teknolojik çerçeveyi belirleyin.\nNasıl yapılmalı?\n• Kullanılacak yapay zekâ bileşenlerini belirleyin:\n• NLP modeli (metin analizi için)\n• Bilgi tabanı yönetimi\n• Arama motoru\n• Chatbot / Soru-cevap sistemi\n• Bulut mu yerel mi kullanılacağına karar verin.\n• Güvenlik, yetkilendirme ve veri erişim ihtiyaçlarını da dahil edin."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#prototip-geliştirme-ve-test",
+    "href": "posts/corpmem/index.html#prototip-geliştirme-ve-test",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "🧪 Prototip Geliştirme ve Test",
+    "text": "🧪 Prototip Geliştirme ve Test\nNereden başlanmalı?\nKüçük, sınırlı bir proje grubunu pilot proje olarak seçin.\nNasıl yapılmalı?\n• Geçmişte yapılmış birkaç projeyi sisteme yükleyin.\n• Bilgi sınıflandırması ve arama işlevlerini test edin.\n• Kullanıcılardan geri bildirim alın. Neyi bulmakta zorlandılar? sistem önerileri işe yarıyor mu?"
+  },
+  {
+    "objectID": "posts/corpmem/index.html#eğitim-ve-kullanıcı-katılımı",
+    "href": "posts/corpmem/index.html#eğitim-ve-kullanıcı-katılımı",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "👥 Eğitim ve Kullanıcı Katılımı",
+    "text": "👥 Eğitim ve Kullanıcı Katılımı\nNereden başlanmalı?\nSistemi kullanacak kişilerin alışkanlıklarını değiştirmeye hazır olup olmadığını anlayın.\nNasıl yapılmalı?\n• Proje yöneticilerine sistemin ne sağladığını anlatan kısa eğitimler verin.\n• Yeni projelerde sistemi nasıl kullanacaklarına dair pratik senaryolar gösterin.\n• Kullanıcı katkısını teşvik edin: “bu projede öğrendiklerinizi girin, sizden sonrakiler faydalansın” yaklaşımı."
+  },
+  {
+    "objectID": "posts/corpmem/index.html#devamlılık-ve-gelişim-planı",
+    "href": "posts/corpmem/index.html#devamlılık-ve-gelişim-planı",
+    "title": "Bilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması",
+    "section": "🔄 Devamlılık ve Gelişim Planı",
+    "text": "🔄 Devamlılık ve Gelişim Planı\nNereden başlanmalı?\nSistemin canlıya geçmesinden sonra nasıl güncel tutulacağını planlayın.\nNasıl yapılmalı?\n• Yeni projelerin sistemle entegre edilmesini otomatik hale getirin.\n• Bilgi güncelleme ve arşivleme politikaları belirleyin.\n• Sistem geri bildirimlerine göre NLP modelini zamanla iyileştirin.\nBu yapı, kurumların proje bazlı çalışmalarda geçmiş deneyimlerden öğrenmesini, bilgi kaybını önlemesini ve karar alma süreçlerinde daha isabetli adımlar atmasını sağlar."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "AIHorizons- by NTU",
+    "section": "",
+    "text": "Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi\n\n\n\n\n\n\nAI\n\n\nLLM\n\n\nMoE\n\n\nExpert Opinion\n\n\n\nYapay zekâ ve doğal dil işleme alanında son yıllarda yaşanan gelişmeler, büyük dil modellerinin (LLM – Large Language Model) hayatımıza hızla girmesini sağladı. Ancak bu modellerin büyümesiyle birlikte, eğitim ve çalıştırma maliyetleri de ciddi oranda arttı. GPT-4, Claude, Gemini,Lllama gibi 100 milyarlarca parametreye sahip modelleri çalıştırmak büyük donanım kaynakları, enerji ve zaman gerektiriyor. İşte bu noktada, hem verimliliği hem de esnekliği bir araya getirmeyi hedefleyen Mixture of Experts (MoE) mimarisi ön plana çıkıyor.\n\n\n\n\n\n6 Tem 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\n\n\n\n\n\n\nAgentic AI: Yeni Nesil Yapay Zekâ\n\n\n\n\n\n\nAgentic AI\n\n\nLLM\n\n\nRAG\n\n\nExpert Opinion\n\n\n\nYapay zekâ (YZ) dünyasında işler hızla değişiyor. Daha birkaç yıl önce, bir YZ modelinin düzgün cevap üretmesi büyük bir başarı sayılırken, artık bu sistemlerin sadece cevap vermelerini değil; hedef belirlemelerini, plan yapmalarını ve kendi başlarına iş yürütmelerini bekliyoruz. Bunu yapacak modelin adı da Agentic AI. Peki nedir bu Agentic AI? Nasıl ve neden ortaya çıktı? Neyi farklı yapıyor? Bu yazıda, bu sorulara cevap verirken, dil modellerinin gelişiminden başlayacak, günümüzdeki kullanım alanlarına, sınırlamalarına, RAG ile bir üst seviyeye geçmelerine değinecek ve nihayetinde Agentic AI’ın ortaya çıkışını ve neden önemli bir paradigma haline geldiğini açıklayacağım.\n\n\n\n\n\n22 May 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\n\n\n\n\n\n\nGeleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış\n\n\n\n\n\n\nTechnology\n\n\nAI\n\n\nScience\n\n\nBook Summary\n\n\nExpert Opinion\n\n\n\nMichio Kaku’nun ‘’Geleceğin Fiziği’’ adlı eseri, önümüzdeki yüzyılda bilimin ve teknolojinin insan yaşamını nasıl dönüştüreceğine dair kapsamlı bir öngörü sunmaktadır. Yazar, 300’den fazla önde gelen bilim insanıyla yaptığı röportajlara ve dünya çapındaki laboratuvarlarda geliştirilmekte olan prototiplere dayanarak; bilgisayar, yapay zeka, tıp, nanoteknoloji, enerji ve uzay yolculuğu gibi alanlarda yaşanması beklenen devrim niteliğindeki gelişmeleri ele almaktadır. Kitap, bu değişimlerin insanlığı ‘’Tip 1’’ olarak adlandırılan gezegensel bir medeniyete doğru nasıl taşıyacağını ve bu süreçte karşılaşılacak zorlukları ve fırsatları incelemektedir.\n\n\n\n\n\n15 May 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\n\n\n\n\n\n\nBilgi Yönetiminin Önemi ve Yapay Zekâ İle Kurumsal Hafızanın Korunması\n\n\n\n\n\n\nKnowledge Management\n\n\nNLP\n\n\nAI\n\n\nExpert Opinion\n\n\n\nGünümüzde yapay zekâ (YZ) teknolojileri, farklı sektörlerde karar alma süreçlerinden otomasyona kadar pek çok alanda devrim yaratmaktadır. Ancak YZ sistemlerinin başarısı, yalnızca algoritmaların karmaşıklığına ya da donanım gücüne değil, aynı zamanda sahip olduğu bilgiye ve bu bilginin nasıl yönetildiğine de bağlıdır. Bu noktada bilgi yönetimi (knowledge management – KM) ve kurumsal hafızanın korunması, yapay zekâ destekli kurumsal sistemlerin etkililiğinde ön plana çıkmaktadır.\n\n\n\n\n\n7 May 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\n\n\n\n\n\n\nÜretken Yapay Zeka 2025: Kullanım Trendleri ve Gelecek\n\n\n\n\n\n\nGen AI\n\n\nExpert Opinion\n\n\n\n2025 yılında üretken yapay zeka (Gen AI), günlük yaşamın ayrılmaz bir parçası haline geldi. Harvard Business Review’de 9 Nisan 2025’te Marc Zao-Sanders tarafından yayımlanan makale, Gen AI’nin kullanım alanlarını ve ortaya çıkan trendleri derinlemesine inceliyor. Reddit ve Quora gibi platformlardan toplanan veriler, yapay zekanın kişisel ve profesyonel alanlarda nasıl bir dönüşüm yarattığını gösteriyor. Bu yazıda, makaledeki ana başlıklara ve ek bilgilere dayanarak, Gen AI’nin 2025’teki durumuna dair bir özet sunuluyor.\n\n\n\n\n\n27 Nis 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\n\n\n\n\n\n\nJEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi\n\n\n\n\n\n\nAI\n\n\nLLM\n\n\nAGI\n\n\nExpert Opinion\n\n\n\nYapay zekâ alanında devrim niteliğinde gelişmeler yaşanıyor. Son yıllarda özellikle büyük dil modelleri (LLM’ler), hem teknoloji dünyasında hem de kamuoyunda büyük bir heyecan yarattı. ChatGPT, Copilot, Claude, Llama, Grok gibi modeller artık günlük hayatın bir parçası. Ancak bu modellerin gerçekten “yapay genel zekâya - Artificial General Intelligence (AGI)” sahip olup olamayacağı hâlâ büyük bir soru işareti.\n\n\n\n\n\n23 Nis 2025\n\n\nNaim Teoman Ünlü\n\n\n\n\n\n\nEşleşen öğe yok"
+  },
+  {
+    "objectID": "posts/agenticai/index.html",
+    "href": "posts/agenticai/index.html",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#büyük-dil-modelleri-llm",
+    "href": "posts/agenticai/index.html#büyük-dil-modelleri-llm",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "Büyük Dil Modelleri (LLM)",
+    "text": "Büyük Dil Modelleri (LLM)\nYapay zekâ modelleri başlangıçta oldukça basitti: Biz bir şey yazdığımızda o da bize cevap veriyordu. Bu sistemler “dil modeli” olarak bilinir ve temel olarak şu şekilde çalışırlar: Kendilerine verilen büyük miktarda metin verisi üzerinde eğitilirler ve her defasında bir sonraki kelimeyi tahmin ederek cümleler kurarlar.\nBu modeller devasa metin kütüphaneleri üzerinde iki aşamada eğitilir:\n\nPretraining (Ön Eğitim): İnternetten ve kamuya açık kaynaklardan elde edilen büyük veri setleriyle, “gelecek kelime ne olabilir?” sorusu üzerinden eğitim yapılır.\nPosttraining (Son Eğitim): Bu aşamada model, daha kullanışlı hale gelmesi için talimatlarla eğitilir (instruction tuning) ve insan geri bildirimleriyle pekiştirme öğrenmesi (RLHF) uygulanır.\n\nBüyük dil modelleri, zamanla çok daha iyi hale geldiler. Artık kod yazabiliyor, içerik oluşturabiliyor, belgeleri özetleyebiliyor ya da müşteri hizmetlerinde destek sağlayabiliyorlar. Ama hâlâ kendiliklerinden bir şey yapamıyorlar. Yani, kendi başlarına bir hedef belirleyip harekete geçemiyorlar."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#geleneksel-dil-modellerinin-sınırları",
+    "href": "posts/agenticai/index.html#geleneksel-dil-modellerinin-sınırları",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "Geleneksel Dil Modellerinin Sınırları",
+    "text": "Geleneksel Dil Modellerinin Sınırları\nGünümüz büyük dil modelleri (ChatGPT, Claude, Gemini gibi) hâlâ ağırlıklı olarak girdi → çıktı sistemleridir. Yani, kullanıcının yazdığı metne tepki verirler; plan yapmaz, amaç gütmez ve birden fazla adımı koordine etmezler.\nBaşlıca genel sorunları da şunlardır:\nHalüsinasyon: Yani bazen gerçekle ilgisi olmayan şeyler uydurabilirler.\nGüncellik sorunu: Eğitildikleri veri sınırlı olduğu için, bazıları internete bağlı olmadığından güncel bilgiye ulaşamaz.\nKaynak belirtmeme: Verdikleri bilginin nereden geldiğini çoğu zaman bilemeyiz.\nKapsam sınırı: Çok uzun belgelerle baş etmekte zorlanırlar.\nGizlilik riski: Kamuya açık verilerle eğitildikleri için, hassas kurumsal verilerle doğrudan çalışmak riskli olabilir.\nİşte bu problemleri aşmak için son yıllarda geliştirilen en etkili yöntemlerden biri: RAG, yani Retrieval-Augmented Generation (Bilgi Erişimli Yanıt Üretimi)’dır."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#rag-dil-modelini-gerçek-bilgiyle-buluşturmak",
+    "href": "posts/agenticai/index.html#rag-dil-modelini-gerçek-bilgiyle-buluşturmak",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "RAG: Dil Modelini Gerçek Bilgiyle Buluşturmak",
+    "text": "RAG: Dil Modelini Gerçek Bilgiyle Buluşturmak\nRAG sistemi, dil modelinin dışarıdan bilgi almasını sağlar. Yani, modelin ezbere, kendi eğitim gördüğü veri ile cevap vermesi yerine, gerçekten “bilerek” cevap vermesini sağlar.\nRAG, temel olarak iki ana bileşeni birleştirir:\n\nBilgiye erişim (Retrieval) : Soruya uygun bilgi, bir doküman havuzundan ya da vektör veritabanından alınır.\nYanıt üretimi (Generation): Elde edilen bilgilerle, model tarafından bir yanıt oluşturulur.\n\nÖrneğin, bir çalışanın “ABC ürününün iade politikası nedir?” sorusunu ele alalım. Model, önce bu soruyu anlayıp ilgili belgeleri (örneğin şirket içi dokümanları) arar, en uygun olanları seçer ve ardından bu içeriklere dayanarak cevap verir. Yani model artık sadece eğitim aldığı veriye bağlı değil; gerçek, güncel ve bağlamsal bilgiye dayanarak cevap verir.\n\n\n\n\n\n\n1. Adım : Bilgi Kaynaklarının Hazırlanması\n🔹 1.1 – Dokümanları Embedding’e Çevirme.\nŞirket belgeleri, sıkça sorulan sorular, ürün bilgileri gibi metinler alınır.\nBu metinler önce parçalara (chunk) bölünür.\nHer bir parça, bir text embedding model (örn. OpenAI, Hugging Face, Cohere) kullanılarak bir vektöre (sayısal temsil) dönüştürülür.\nÖrneğin: “Ürün X, 30 gün içinde iade edilebilir.” → [0.12, -0.84, 1.43, …]\n🔹 1.2 – Vektör Veritabanına Kaydetme.\nBu vektörler bir vektör veritabanına (örn. Pinecone, FAISS, Chroma, Weaviate) kaydedilir.\nAmaç, sonradan yapılacak aramalarda, en yakın anlamda benzer içerikleri hızlıca bulabilmektir."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#adım-soru-geldiğinde-sorgulama-ve-geri-getirme-retrieval",
+    "href": "posts/agenticai/index.html#adım-soru-geldiğinde-sorgulama-ve-geri-getirme-retrieval",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "2. Adım : Soru Geldiğinde – Sorgulama ve Geri Getirme (Retrieval)",
+    "text": "2. Adım : Soru Geldiğinde – Sorgulama ve Geri Getirme (Retrieval)\n🔹 2.1 – Soru Embedding’e Çevrilir.\nKullanıcıdan gelen soru (örneğin: “İade süresi ne kadar?”), yine aynı embedding modeliyle bir vektöre dönüştürülür.\n🔹 2.2 – Vektör Araması Yapılır.\nSoru vektörü ile daha önce kayıtlı doküman vektörleri karşılaştırılır.\nBenzerlik ölçütü olarak genelde cosine similarity kullanılır.\nEn benzer olan top-k döküman parçaları seçilir (örneğin en alakalı 3-5 sonuç)."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#adım-üretim-generation",
+    "href": "posts/agenticai/index.html#adım-üretim-generation",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "3. Adım : Üretim (Generation)",
+    "text": "3. Adım : Üretim (Generation)\n🔹 3.1 – Dil Modeli İçin Prompt Hazırlanır.\nElde edilen doküman parçaları, orijinal kullanıcı sorusuyla birlikte bir prompt (girdi) halinde dil modeline verilir.\nBağlam: - “Ürün X, 30 gün içinde iade edilebilir.” Soru: - “Ürün X’in iade süresi nedir?”\n🔹 3.2 – LLM (GPT, Gemini, Claude, Mistral vs.) Cevap Üretir.\nModel bu bilgileri kullanarak, daha güvenilir ve doğru bir cevap üretir:\n“Ürün X satın alındıktan sonra 30 gün içinde iade edilebilir.”\n✅ RAG’in Faydaları:\n\nDaha doğru sonuçlar alınabilir.\nKurum içi özel bilgilerle çalışılabilir.\nHalüsinasyon oranı düşer.\nModelin neye dayanarak cevap verdiği görülebilir.\n\n💼 Kullanım Senaryoları:\n\nKurumsal bilgi botları.\nHukuki belge özetleyiciler.\nSağlık danışmanlığı.\nMüşteri destek yardımcıları.\nAkademik araştırma özetleme araçları."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#agentic-ai-nedir",
+    "href": "posts/agenticai/index.html#agentic-ai-nedir",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "Agentic AI Nedir?",
+    "text": "Agentic AI Nedir?\nBuraya kadar bahsedilenler, veriyle güçlendirilmiş ancak hâlâ tepkisel sistemlerdir. Agentic AI, bunun ötesine geçer.\nAgentic AI; kendi başına hareket edebilen, planlama yapabilen, araç kullanabilen ve hatta kendi kendini geliştirebilen bir yapay zekâdır.\nAgentic AI, dil modellerinin aracıları (agents) olarak çalıştığı bir yapıdır.\nBu yeni nesil yapay zekâ sistemlerinin temel özellikleri dört ana başlık altında toplanabilir:\n\n\n\n\n\nPlanlama: Agentic AI, sadece verilen bir komutu yerine getirmekle kalmaz, aynı zamanda bu komutun en etkili şekilde nasıl gerçekleştirileceğini adım adım planlayabilir. Kullanıcının amacını analiz eder, ara hedefler belirler ve bu hedeflere ulaşmak için stratejik bir yol haritası oluşturur.\nYansıtma (Reflection): Bu sistemler, çıktılarının kalitesini değerlendirme ve gerektiğinde kendi yanıtlarını gözden geçirip düzeltme yeteneğine sahiptir. Bu da onlara daha güvenilir ve tutarlı olmalarını sağlayan bir özeleştiri mekanizması kazandırır.\nAraç Kullanımı: Agentic yapay zekâlar, dış dünya ile etkileşim kurmak için araçlara erişebilir. Örneğin, bir API üzerinden gerçek zamanlı veri çekebilir, bir veritabanından bilgi sorgulayabilir ya da hesaplama yaparak kullanıcıya sonuç sunabilir. Bu yönüyle yalnızca konuşan bir modelden çok daha fazlasıdır.\nÇoklu Ajan İşbirliği: Agentic sistemler, görevleri farklı rollere ayırarak birden fazla yapay zeka ajanının birlikte çalışmasını sağlayabilir. Her bir ajan özel bir görevi üstlenirken, sistem genel hedefe ulaşmak için bu ajanların çıktılarını koordine eder. Bu işbirliği, karmaşık iş süreçlerinde büyük avantaj sağlar.\nAgentic AI bu özellikleriyle, geleneksel dil modellerinden farklı olarak daha otonom, daha esnek ve çok daha etkili çözümler üretebilen yeni bir paradigma sunar."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#gerçek-dünyada-agentic-ai-nerelerde-kullanılabilir",
+    "href": "posts/agenticai/index.html#gerçek-dünyada-agentic-ai-nerelerde-kullanılabilir",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "Gerçek Dünyada Agentic AI Nerelerde Kullanılabilir?",
+    "text": "Gerçek Dünyada Agentic AI Nerelerde Kullanılabilir?\nBir müşteri destek sistemi, kullanıcının sorusunu alır, ilgili iç veriyi bulur, müşteri hesabına erişip geçmiş işlemleri kontrol eder ve doğrudan çözüm üretir.\nBir yazılım geliştirme ajanı, siz kodda bir hata buldunuz diye ona söylersiniz; o gider hatayı analiz eder, düzeltir, gerekirse yeni bir sürüm oluşturur ve GitHub’a PR açar.\nBir araştırma ajanı, sizin için belirli bir konu hakkında en güncel bilgileri internetten tarar, akademik makaleleri özetler ve bir sunum hazırlar.\nVe tüm bunlar sizin tek bir satır yazmanızla mümkün olabilir."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#bu-sistemler-nasıl-test-ediliyor",
+    "href": "posts/agenticai/index.html#bu-sistemler-nasıl-test-ediliyor",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "Bu Sistemler Nasıl Test Ediliyor?",
+    "text": "Bu Sistemler Nasıl Test Ediliyor?\nBu kadar karmaşık bir sistemin doğruluğunu test etmek hiç de kolay değil.\nBu yüzden klasik “model doğru mu cevap verdi?” kontrolü yerine, artık daha yaratıcı yöntemler kullanılıyor:\n\nModelin kendi çıktısını tekrar değerlendirip “daha iyisini yapabilir miyim?” demesi.\nGerekirse kendi kendini “eleştirmesi”.\nBir görev için birden fazla ajan oluşturulması (biri araştırır, biri değerlendirir, biri raporlar).\n\nBöylece daha sağlam, tutarlı ve güvenilir sistemler ortaya çıkıyor."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#nereden-başlamalı",
+    "href": "posts/agenticai/index.html#nereden-başlamalı",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "Nereden Başlamalı?",
+    "text": "Nereden Başlamalı?\nEğer siz de bu dünyaya adım atmak istiyorsanız;\n1. Küçük başlayın: Önce bir dil modeliyle basit soruları cevaplayarak başlayın. Bunun için LLM sağlayıcılarının sunduğu playground ortamlarında küçük denemeler yapın.\n2. Araçları keşfedin: LangChain, LlamaIndex gibi açık kaynaklı sistemlere göz atın.\n3. Prototipleyin: Basit bir müşteri destek ajanı ya da belge özetleyici tasarlayın.Deneme → Geri Bildirim → Geliştirme döngüsünü sık sık tekrarlayın.\n4. Güvenliğe dikkat edin: Girdi-çıktı denetimi ve veri gizliliğine dikkat edin."
+  },
+  {
+    "objectID": "posts/agenticai/index.html#sonuç-agentic-ai-neden-önemli",
+    "href": "posts/agenticai/index.html#sonuç-agentic-ai-neden-önemli",
+    "title": "Agentic AI: Yeni Nesil Yapay Zekâ",
+    "section": "Sonuç: Agentic AI Neden Önemli?",
+    "text": "Sonuç: Agentic AI Neden Önemli?\n2025 yılı itibarıyla yapay zekâ dünyasında en çok konuşulan konu açıkça Agentic AI oldu. Bu teknoloji artık sadece yazılımcılar ve araştırmacılar arasında değil; şirket yöneticilerinin toplantılarında, ürün ekiplerinin planlarında ve hatta devletlerin teknoloji politikalarında bile ön sıralarda yer alıyor. Agentic AI, herkesin dikkatini çeken ve yapay zekâ alanında yönü belirleyen en önemli gelişme hâline geldi.\nAgentic AI, yapay zekânın “pasif yardımcı” döneminden, “aktif iş ortağı” dönemine geçişini temsil ediyor. Bu modeller artık yalnızca gelen girdilere yanıt veren sistemler değil; hedef belirleyebilen, plan yapabilen, karar verebilen, dış dünyayla etkileşime girebilen ve gerektiğinde kendi çıktısını değerlendirip düzeltebilen yapılar hâline geldi.\nBu değişim, yapay zekânın kullanım biçimini kökten dönüştürüyor. Daha önce yalnızca rehberlik eden modellerin yerini, şimdi görevleri üstlenen ve baştan sona sonuç üretebilen akıllı ajanlar alıyor. Bu, sadece üretkenliği artırmakla kalmıyor; aynı zamanda karmaşık süreçlerin otomasyonu, kişiselleştirilmiş hizmetler, dinamik karar destek sistemleri gibi pek çok yeni olanak da sunuyor.\n2025’in ajandasında Agentic AI’ın bu hızlı yükselişi, bireylerin günlük yaşamından büyük kurumsal sistemlere kadar her alanda etkisini daha fazla hissettirmeye başladı. Şirketler artık yalnızca “bir dil modeli nasıl entegre edilir?” değil, “hangi süreçler otonom ajanlara devredilmeli?” sorusunu soruyor.\nAncak bu yükselişin beraberinde getirdiği sorumluluklar da var. Agentic sistemlerin etik sınırlar içinde kalması, güvenli çalışması ve insanlar üzerinde kontrolü devralmaktan ziyade onları desteklemesi gerekiyor. Bu yüzden kullanım kılavuzu, yönetişim politikaları ve denetim mekanizmaları da bu dönüşümün ayrılmaz bir parçası olmalı.\nKısacası, Agentic AI, yapay zekânın sadece bir teknoloji değil, bir çalışma arkadaşı, bir stratejik danışman ve hatta bir çözüm ortağı olabileceğini gösteriyor. Onunla ne kadar erken ve bilinçli bir şekilde tanışırsak, bu dönüşümden o kadar fazla fayda sağlayabiliriz."
+  },
+  {
+    "objectID": "posts/futureofphys/index.html",
+    "href": "posts/futureofphys/index.html",
+    "title": "Geleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element."
+  },
+  {
+    "objectID": "posts/futureofphys/index.html#teknolojinin-evrimi-ve-toplumsal-etkileri",
+    "href": "posts/futureofphys/index.html#teknolojinin-evrimi-ve-toplumsal-etkileri",
+    "title": "Geleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış",
+    "section": "Teknolojinin Evrimi ve Toplumsal Etkileri",
+    "text": "Teknolojinin Evrimi ve Toplumsal Etkileri\nKaku, teknolojik ilerlemenin genellikle dört aşamadan geçtiğini belirtir:\n\nBaşlangıçta kıymetli ve nadir (Aşama I)\nSonra kişisel kullanıma açılması (Aşama II)\nYaygınlaşıp ucuzlaması (Aşama III)\nSon olarak hayatın dokusuna işlenerek görünmez bir altyapı haline gelmesi (Aşama IV)"
+  },
+  {
+    "objectID": "posts/futureofphys/index.html#mağara-adamı-prensibi",
+    "href": "posts/futureofphys/index.html#mağara-adamı-prensibi",
+    "title": "Geleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış",
+    "section": "Mağara Adamı Prensibi",
+    "text": "Mağara Adamı Prensibi\nYazar, bazı fütüristik tahminlerin (örneğin kağıtsız ofis, insansız şehir, siber turizm) neden tam olarak gerçekleşmediğini açıklamak için “Mağara Adamı Prensibi”ni öne sürer. Bu prensibe göre, modern teknoloji ile ilkel atalarımızın arzuları arasında bir çatışma olduğunda, genellikle ilkel arzular (örneğin, somut kanıt isteği, yüz yüze etkileşim ihtiyacı, sosyal bağ kurma ve statü ihtiyacı) galip gelir. Bu durum, teknolojinin gelecekteki sosyal etkileşimleri nasıl şekillendireceğini anlamada önemli bir faktördür."
+  },
+  {
+    "objectID": "posts/futureofphys/index.html#bilgisayarın-geleceği-maddenin-üzerindeki-zihin",
+    "href": "posts/futureofphys/index.html#bilgisayarın-geleceği-maddenin-üzerindeki-zihin",
+    "title": "Geleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış",
+    "section": "1️⃣ Bilgisayarın Geleceği: Maddenin Üzerindeki Zihin",
+    "text": "1️⃣ Bilgisayarın Geleceği: Maddenin Üzerindeki Zihin\nYakın Gelecek (2030’a Kadar): Moore Yasası’nın devamıyla bilgisayar gücü artmaya devam edecek. Çipler o kadar ucuzlayıp küçülecek ki, giysilerimizden mobilyalarımıza, duvarlarımızdan vücudumuza kadar her yere dağılacak ve hepsi internete bağlı olarak isteklerimizi sessizce yerine getirecek. İnternet, gözlükler ve kontakt lensler aracılığıyla hayatımıza entegre olacak, yüz tanıma ve anında bilgi erişimi sağlayacak. Görüntüler doğrudan retinamıza yansıtılabilecek veya lensin kendisi bir ekran görevi görecek. Sürücüsüz arabalar GPS ve gelişmiş sensörler sayesinde yaygınlaşacak. Evlerimizdeki duvarlar, devasa, esnek OLED (organik ışık yayan diyotlar) ekranlara dönüşerek hem duvar kağıdının desenini bir düğmeyle değiştirmemize hem de dünyanın herhangi bir yerindeki insanlarla 3 boyutlu tele-varlık (telepresence) aracılığıyla sanal toplantılar yapmamıza olanak tanıyacak. Sanal dünyalar ve haptik teknoloji gelişecek. Esnek elektronik kağıtlar sayesinde dizüstü bilgisayarlar katlanıp cüzdanımıza girebilecek. Tıbbi teşhisler; DNA çipleri ve taşınabilir MRI cihazları ile evden yapılabilecek.\nYüzyıl Ortası (2030-2070): Moore Yasası’nın sınırlarına ulaşılması bekleniyor. Silikon sonrası teknolojiler (atomik transistörler, grafen, kuantum bilgisayarlar) önem kazanacak. Gerçeklikle sanal gerçekliğin iç içe geçtiği “artırılmış gerçeklik” yaygınlaşacak. Bu durum; turizm, eğitim, askeri uygulamalar ve daha birçok alanı dönüştürecek. Evrensel çeviriciler sayesinde dil engelleri azalacak. Hologramlar ve gerçek 3 boyutlu TV’ler gelişecek.\nUzak Gelecek (2070-2100): Bilgisayarlar doğrudan zihin gücüyle kontrol edilebilecek (beyin-bilgisayar arayüzleri). Zihin okuma ve hatta rüyaları kaydetme mümkün olabilecek. Telekinezi benzeri yetenekler; süperiletkenler aracılığıyla nesneleri zihinle hareket ettirmeyi sağlayabilir."
+  },
+  {
+    "objectID": "posts/futureofphys/index.html#yapay-zekanın-ai-geleceği-makinelerin-yükselişi",
+    "href": "posts/futureofphys/index.html#yapay-zekanın-ai-geleceği-makinelerin-yükselişi",
+    "title": "Geleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış",
+    "section": "2️⃣ Yapay Zekanın (AI) Geleceği: Makinelerin Yükselişi",
+    "text": "2️⃣ Yapay Zekanın (AI) Geleceği: Makinelerin Yükselişi\nMevcut Durum ve Zorluklar: Yapay zeka (YZ), insanlığın en büyük hayallerinden ve aynı zamanda en derin korkularından biri olmuştur. Tarih boyunca YZ alanında büyük beklentiler ve ardından gelen “YZ kışları” (fonların kesildiği ve hayal kırıklıklarının yaşandığı dönemler) yaşanmıştır. IBM’in Deep Blue bilgisayarının dünya satranç şampiyonunu yenmesi gibi başarılar, makinelerin belirli görevlerde insanüstü performans gösterebileceğini kanıtlasa da, gerçek anlamda “düşünen” makineler yaratmaktan hala çok uzaktayız.\nGünümüz robotları (örneğin ASIMO) etkileyici görünse de, zekaları sınırlıdır ve önceden programlanmışlardır. Yapay zekanın önündeki iki temel sorun örüntü tanıma ve sağduyudur. Beynin dijital bir bilgisayar gibi değil, bir öğrenme makinesi (nöral ağ) gibi çalıştığı anlaşılmıştır.\nYakın Gelecek ve Yüzyıl Ortası: Gelecekte, uzman sistemler (robodoktor, roboavukat gibi belirli alanlarda insan uzmanlığını taklit eden yazılımlar) hayatımıza daha fazla girecek. Robot hemşireler ve modüler robotlar (şekil değiştirebilen) farklı alanlarda kullanılacak. Robot cerrahlar (da Vinci sistemi gibi), aşçılar ve müzisyenler gelişecek. Duygusal robotlar (örneğin KISMET), insanlarla etkileşim kurabilen ancak gerçek duyguları hissetmeyen makineler olarak ortaya çıkacak.\nUzak Gelecek ve Tekillik: İnsan beynini tersine mühendislikle anlama çabaları (süper bilgisayar simülasyonları, nöron haritalama) hız kazanacak. Makinelerin insan zekasını aşması (tekillik) olasılığı tartışılmakla birlikte, Moore Yasası’nın sonu, hızın zekaya eşit olmaması, yazılım darboğazı gibi engeller bulunmaktadır. Ray Kurzweil gibi fütüristler, bilgisayar gücündeki üstel artışa dayanarak tekilliğin 2045 gibi yakın bir tarihte gerçekleşebileceğini öngörürken, birçok bilim insanı bu tarihin çok daha uzak (yüzyıllar) olduğunu veya kesin bir zaman vermenin mümkün olmadığını düşünmektedir. İnsanların robotlarla birleşmesi (protezler, geliştirilmiş yetenekler, suretler) bir olasılık olarak değerlendirilmektedir."
+  },
+  {
+    "objectID": "posts/futureofphys/index.html#tıbbın-geleceği-yaşamın-yeniden-tanımlanması",
+    "href": "posts/futureofphys/index.html#tıbbın-geleceği-yaşamın-yeniden-tanımlanması",
+    "title": "Geleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış",
+    "section": "3️⃣ Tıbbın Geleceği: Yaşamın Yeniden Tanımlanması",
+    "text": "3️⃣ Tıbbın Geleceği: Yaşamın Yeniden Tanımlanması\nMoleküler Tıp Devrimi: Tıp; atomlar, moleküller ve genler düzeyine inerek bir devrim yaşamaktadır. İnsan Genom Projesi ve biyoinformatik sayesinde kişisel genom dizileme ucuzlayacak ve yaygınlaşacaktır. İnsan Genom Projesi, herkesin kişisel genomunun bir CD-ROM’da bulunabileceği bir çağı başlatmıştır. Biyoinformatik (yani binlerce organizmanın genomunu hızla taramak ve analiz etmek için bilgisayarları kullanmak) hastalıkların genetik temellerini anlamada ve adli tıpta devrim yaratmaktadır.\nYakın Gelecek ve Yüzyıl Ortası: Doktor ziyaretleri robodoktorlar ve evdeki sensörler aracılığıyla yapılacak. Kanser gibi hastalıklar, bir tümör oluşmadan yıllar önce DNA çipleriyle ve nanopartiküllerle (“akıllı bombalar”) tedavi edilebilecek. Doku mühendisliği ve kök hücre teknolojisi sayesinde hasarlı organlar yenilenebilecek. Kök hücreler (“ana hücreler”), vücuttaki her tür hücreye dönüşebilme potansiyelleriyle diyabet, kalp hastalığı, Alzheimer, Parkinson ve omurilik yaralanmaları gibi birçok hastalığın tedavisinde devrim yaratma vaadi taşımaktadır. İnsan klonlama prensipte mümkün olsa da, etik ve sosyal engeller nedeniyle yaygınlaşması beklenmemektedir. Hayvan klonlaması bile zorlu bir süreçtir. Gen terapisi, özellikle tek bir genin mutasyonundan kaynaklanan 5.000 civarında genetik hastalığın tedavisinde umut vaat etmektedir. Gen terapisi, özellikle tek gen kaynaklı hastalıkların tedavisinde standart hale gelecek.\nUzak Gelecek: “Tasarım bebekler” ve insan yeteneklerini genetik olarak geliştirme olasılığı ortaya çıkacak. Yaşlanmanın sırları da çözülmeye çalışılmaktadır. Yaşlanma, genetik ve hücresel düzeydeki hataların birikimi olarak görülmektedir. Kalori kısıtlamasının yaşam süresini uzattığı ve yaşa bağlı hastalıkları azalttığı çeşitli canlılarda kanıtlanmıştır. Bu etkiyi sağlayan SIR2/SIRT genleri ve bunları aktive eden resveratrol gibi moleküller incelenmektedir. Hücre uçlarındaki telomerlerin kısalması da yaşlanmayla ilişkilidir ve kanser hücrelerinin ölümsüzlüğünü sağlayan telomeraz enzimi, normal hücrelerde yaşlanmayı tersine çevirme potansiyeli taşısa da kanser riski barındırmaktadır. Gelecekte yaşam süresini uzatmak muhtemelen doku mühendisliği, hücre onarımını artıran kokteyller, gen terapisi, sağlıklı yaşam tarzı ve nanosensörlerin bir kombinasyonuyla mümkün olabilir ve ortalama yaşam süresi 150 yıla veya daha da üzerine çıkabilir. Ancak bu durum aşırı nüfus gibi sosyal sorunları da beraberinde getirecektir. Biyoteknoloji, soyu tükenmiş canlıları diriltme (mamut veya Neandertal genomlarının dizilenmesi gibi) ve hatta hiç var olmamış yaşam formları yaratma (kanatlı domuz gibi) potansiyeli de sunmaktadır. Ancak bu gelişmeler, biyolojik savaş gibi ciddi riskleri de beraberinde getirecektir. 1918 İspanyol gribi virüsünün yeniden canlandırılması veya AIDS virüsünün hava yoluyla bulaşabilir hale getirilmesi gibi kabus senaryoları mümkündür."
+  },
+  {
+    "objectID": "posts/futureofphys/index.html#nanoteknolojinin-geleceği-hiçten-her-şey",
+    "href": "posts/futureofphys/index.html#nanoteknolojinin-geleceği-hiçten-her-şey",
+    "title": "Geleceğin Fiziği: 2100 Yılına Doğru Bilimsel Bir Bakış",
+    "section": "4️⃣ Nanoteknolojinin Geleceği: Hiçten Her Şey?",
+    "text": "4️⃣ Nanoteknolojinin Geleceği: Hiçten Her Şey?\nTemel Kavramlar: Richard Feynman’ın “Altta Bolca Yer Var” konuşmasıyla temelleri atılan nanoteknoloji, maddeyi atomik ve moleküler düzeyde manipüle etme bilimidir. Bu ölçekte kuantum yasaları (boşluk ve katılık yanılsaması, belirsizlik ilkesi, süperpozisyon) baskın hale gelir. Feynman, prensipte atomları tek tek istenilen şekilde dizerek herhangi bir kimyasal maddeyi sentezlemenin mümkün olacağını öngörmüştür. Günümüzde bilim insanları, taramalı tünelleme mikroskobu (STM) ve atomik kuvvet mikroskobu (AFM) gibi araçlarla tek tek atomları görebilmekte ve hareket ettirebilmektedir. Nanoteknolojinin ilk ticari uygulamaları, paslanmayı önleyen ince moleküler kaplamalar, leke tutmayan giysiler ve MEMS (mikroelektromekanik sistemler) (mürekkep püskürtücü kartuşlar, hava yastığı sensörleri) şeklinde ortaya çıkmıştır.\nUygulamalar:\n\nTıp: Vücut içinde dolaşan nanomakineler kanser hücrelerini yok edecek veya ilaç taşıyacak. “Akıllı haplar” ve nanopartiküller bu alandaki erken örneklerdir. DNA çipleri hastalıkları erken teşhis edecek.\nBilgisayarlar: Karbon nanotüpler ve grafen, silikon sonrası çağ için potansiyel malzemelerdir. Kuantum bilgisayarlar, atomları kübit olarak kullanarak devasa hesaplama gücü sunsa da, dekoherans gibi sorunlarla mücadele etmektedir.\nProgramlanabilir Madde (Şekil Değiştiren Madde): Kum tanesi büyüklüğünde bilgisayar çipleri (“katomlar”) sayesinde nesneler bir düğmeye basarak şekil, renk ve form değiştirebilecek. Bu, tasarım, tüketici ürünleri ve mobilya gibi alanlarda devrim yaratabilir.\nÇoğaltıcı (Replicator): Nanoteknolojinin nihai hedefi, temel hammaddeleri alıp moleküler düzeyde istenen her şeyi üretebilen bir “çoğaltıcıdır”. Kendi kendini kopyalayabilen nanobotlar bu teknolojinin temelini oluşturabilir. Ancak “yapışkan parmaklar” (nanobotların moleküllere yapışması) ve “şişman parmaklar” (nanobotların atomları manipüle etmek için fazla büyük kalması) gibi bilimsel engeller ve “Gri Goo-Grey Goo” (kontrolsüz çoğalan nanobotların dünyayı tüketmesi) gibi potansiyel tehlikeler bulunmaktadır. Çoğaltıcının icadı, kıtlık ekonomisini ortadan kaldırarak toplumu temelden sarsabilir, ancak Mağara Adamı Prensibi ve insanların çalışma ve anlam arayışı gibi faktörler, toplumun tamamen tembelliğe sürüklenmesini engelleyebilir."
+  },
+  {
+    "objectID": "posts/jepa/index.html",
+    "href": "posts/jepa/index.html",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "",
+    "text": "Sesli Dinle\n\n\nYour browser does not support the audio element.\nİşte bu noktada sahneye çıkan önemli bir isim var: Yann LeCun. Yapay zekânın öncülerinden biri olan LeCun, NVIDIA GTC 2025 etkinliğinde yaptığı açıklamada çarpıcı bir görüş dile getirdi: “Artık LLM’lerle ilgilenmiyorum.” Bu iddialı ifade, aslında çok daha derin bir yaklaşımın habercisiydi. LeCun, yapay zekânın geleceğinin farklı bir yönde ilerlemesi gerektiğini savunuyor ve bu yolculukta LLM’lerin sınırlı bir rolü olduğunu belirtiyor.\nYouTube Video Link: Buradan izleyebilirsiniz."
+  },
+  {
+    "objectID": "posts/jepa/index.html#llmler-neden-yetersiz",
+    "href": "posts/jepa/index.html#llmler-neden-yetersiz",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "LLM’ler Neden Yetersiz?",
+    "text": "LLM’ler Neden Yetersiz?\nLeCun’a göre LLM’ler, çoğunlukla metin tabanlı veriyle eğitilen, bir sonraki kelimeyi tahmin eden sistemlerdir. Bu sistemler, ürünlerde küçük iyileştirmeler yapmaya elverişli olabilir ancak gerçek dünya bilgisiyle derinlemesine etkileşim kuramazlar. Çünkü kelimelerle sınırlı bir temsil biçimi, fiziksel dünya gibi karmaşık ve sürekli değişen bir ortamı anlamak için yeterli değildir.\nDahası, LLM’ler dört temel alanda yetersiz kalıyor:\n\nLeCun, bu alanların yapay zekânın geleceği için kritik olduğunu ve LLM mimarilerinin bu ihtiyaçlara cevap veremediğini vurguluyor."
+  },
+  {
+    "objectID": "posts/jepa/index.html#dünya-modelleri-ve-yeni-yönelimler",
+    "href": "posts/jepa/index.html#dünya-modelleri-ve-yeni-yönelimler",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Dünya Modelleri ve Yeni Yönelimler",
+    "text": "Dünya Modelleri ve Yeni Yönelimler\nLeCun’un önerdiği yaklaşımın temelinde “dünya modeli” fikri yatıyor. Bu kavram, yapay zekânın çevresini tıpkı bir insan gibi “içsel bir modelle” anlayabilmesini ifade ediyor. Örneğin, bir nesneyi yukarıdan ittirdiğinizde devrileceğini ya da aşağı kısmından ittiğinizde kayacağını bilmek, insanların doğrudan gözlemle kazandığı bir yetidir. LeCun, yapay zekânın da benzer şekilde çevresini anlaması gerektiğini söylüyor.\nBunu başarmak için önerdiği çözüm ise: JEPA (Joint Embedding Predictive Architecture) (Ortak Gömülü Öngörüsel Mimari)."
+  },
+  {
+    "objectID": "posts/jepa/index.html#jepa-mimarisi-yeni-nesil-zeka",
+    "href": "posts/jepa/index.html#jepa-mimarisi-yeni-nesil-zeka",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "JEPA Mimarisi: Yeni Nesil Zeka",
+    "text": "JEPA Mimarisi: Yeni Nesil Zeka\nJEPA, klasik LLM’lerin aksine, üretici olmayan (non-generative) ve soyut temsil tahmini yapan bir mimaridir. LeCun’un açıklamalarına göre, JEPA modeli doğrudan piksel tahmini yapmaz. Onun yerine, videolarda ya da verilerde gizlenmiş bölümleri soyut bir temsil uzayında tahmin eder. Bu da modeli daha verimli, daha anlamlı ve gerçek dünya bağlamıyla daha uyumlu hale getirir.\n\nSoyut Temsil Öğrenimi\nJEPA, geleneksel modellerin yaptığı gibi girdiyi olduğu gibi yeniden üretmeye çalışmak yerine; girdinin soyut özelliklerini temsili bir uzayda öğrenmeye ve bu uzayda anlamlı ilişkiler kurarak çıkarımlar yapmaya odaklanır. Bu da, sistemi daha verimli, daha esnek ve insan kavrayışıyla daha uyumlu hâle getirir; çünkü insanlar da çevrelerini piksel düzeyinde değil, kavramsal düzeyde algılar ve yorumlar.\n\n\nMaskeleme ile Öngörüsel Öğrenme\nModelin eğitimi sırasında, video veya veri akışının belirli bölümleri kasıtlı olarak maskelenir; ardından JEPA, eksik kalan parçaları, ham görsellerle değil, temsil uzayındaki soyut özelliklerle tamamlamaya çalışır. Bu strateji sayesinde, model yalnızca verinin “görünüşünü” değil, altında yatan “anlamını” da kavrayabilir; örneğin, bir videonun belirli bir karesi eksildiğinde, JEPA bu karede ne olabileceğini görsel sadakatle değil, bağlamsal bütünlükle tahmin eder.\n\n\nDünya Modeli Yeteneği\nJEPA, doğadan alınmış video verileri üzerinde eğitilerek, tıpkı insanlarda olduğu gibi bir dünya modeli geliştirir; bu model, nesnelerin hareketlerine ilişkin sezgisel fizik kurallarını içselleştirir. Örneğin; bir nesnenin havada süzülüp süzülemeyeceği, kaybolup kaybolmaması gerektiği veya şeklinin doğal olmayan biçimde değişip değişmediği gibi olayların fiziki doğruluğunu analiz edebilir; bu da, yapay zekânın yalnızca görsel değil, mantıksal tutarlılıkla da olayları değerlendirebilmesini sağlar.\n\n\nAz Veriyle Verimli Öğrenme\nJEPA, LLM’lerin ihtiyaç duyduğu devasa miktarda veriyle değil;tıpkı çocukların birkaç örnekle kavram öğrenmesi gibi, az sayıda örnekle etkili öğrenme gerçekleştirebilir. Bu özellik, hem veri kaynaklarının sınırlı olduğu durumlar için avantaj sağlar hem de eğitimi daha verimli ve sürdürülebilir hâle getirir.Meta’nın geliştirdiği bu mimari, insan öğrenmesine oldukça benzer şekilde çalışır."
+  },
+  {
+    "objectID": "posts/jepa/index.html#transformer-yerine-neden-jepa",
+    "href": "posts/jepa/index.html#transformer-yerine-neden-jepa",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Transformer Yerine Neden JEPA?",
+    "text": "Transformer Yerine Neden JEPA?\n\n\n\n\n\n\n\n\nÖzellik\nTransformer (LLM, VideoGen)\nJEPA\n\n\n\n\nÖğrenme Türü\nToken/Piksel Tahmini\nTemsil Üzerinden Tahmin\n\n\nVerimlilik\nYüksek işlem gücü, çok veri\nDaha az veri ile etkili\n\n\nGerçeklik Bağlantısı\nZayıf, metin tabanlı\nGüçlü, video ve fiziksel bağlam\n\n\nAkıl Yürütme\nSöz dizimi temelli\nKavramsal ve açık"
+  },
+  {
+    "objectID": "posts/jepa/index.html#sistem-1-ve-sistem-2-düşünme-modelleri",
+    "href": "posts/jepa/index.html#sistem-1-ve-sistem-2-düşünme-modelleri",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Sistem 1 ve Sistem 2 Düşünme Modelleri",
+    "text": "Sistem 1 ve Sistem 2 Düşünme Modelleri\nLeCun, yapay zekâda “düşünme” kavramına da önemli bir boyut ekliyor: Sistem 1 ve Sistem 2 düşünme modelleri. Psikolojide yer alan bu yaklaşım, insanların iki tür düşünme biçimi olduğunu söyler:\n\nSistem 1: Hızlı, sezgisel ve otomatik düşünmedir. (Örnek: Deneyimli bir sürücünün araç kullanması)\nSistem 2: Yavaş, mantıklı ve planlı düşünmedir. (Örnek: Satrançta strateji kurmak)\n\nLLM’ler, genellikle Sistem 1 tipi davranışlar sergiler. Ancak LeCun’a göre gerçek AGI’ye ulaşmak için Sistem 2 düşünce biçimini taklit eden mimarilere ihtiyaç vardır. JEPA mimarisi, bu tür “akıl yürütme” süreçlerine daha uygun bir zemin sunar."
+  },
+  {
+    "objectID": "posts/jepa/index.html#sadece-metinle-agi-mümkün-mü",
+    "href": "posts/jepa/index.html#sadece-metinle-agi-mümkün-mü",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Sadece Metinle AGI Mümkün mü?",
+    "text": "Sadece Metinle AGI Mümkün mü?\nLeCun, metinle eğitilen sistemlerin veri sınırlarını da gündeme getiriyor. Şu anda LLM’ler yaklaşık 30 trilyon token ile eğitiliyor. Bu miktarda metni okumak bir insan için 400 bin yıl sürerdi. Ancak bir çocuk, sadece 4 yaşına kadar olan süreçte, görsel yollarla benzer büyüklükte bir veri alıyor. Bu, görsel ve deneyimsel öğrenmenin ne kadar önemli olduğunu gösteriyor."
+  },
+  {
+    "objectID": "posts/jepa/index.html#sonuç-agiye-giden-yol-farklı",
+    "href": "posts/jepa/index.html#sonuç-agiye-giden-yol-farklı",
+    "title": "JEPA: Geleneksel LLM’lerin Ötesinde Yeni Nesil Yapay Zekâ Mimarisi",
+    "section": "Sonuç: AGI’ye Giden Yol Farklı",
+    "text": "Sonuç: AGI’ye Giden Yol Farklı\nYann LeCun’un bu açıklamaları, yapay zekâda yeni bir çağın başlangıcına işaret ediyor olabilir. Büyük dil modelleri her ne kadar şu an için etkileyici uygulamalar sunsa da, gerçek anlamda genel yapay zekâya sahip sistemler;, fiziksel dünyayı anlayan, plan yapabilen ve soyut düşünebilen mimarilerle mümkün olacak.\nJEPA gibi yaklaşımlar, yapay zekânın sadece veriyi işleyen değil, dünyayı anlayan bir varlığa dönüşmesini sağlayabilir. Belki de gelecekteki AGI sistemleri, LLM’lerin bir uzantısı değil; onlardan tamamen farklı, çok daha derin ve esnek yapılar olacak."
+  }
+]

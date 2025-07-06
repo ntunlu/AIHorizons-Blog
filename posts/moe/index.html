@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="tr" xml:lang="tr"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Naim Teoman Ünlü">
+<meta name="description" content="Yapay zekâ ve doğal dil işleme alanında son yıllarda yaşanan gelişmeler, büyük dil modellerinin (LLM – Large Language Model) hayatımıza hızla girmesini sağladı. Ancak bu modellerin büyümesiyle birlikte, eğitim ve çalıştırma maliyetleri de ciddi oranda arttı. GPT-4, Claude, Gemini,Lllama gibi 100 milyarlarca parametreye sahip modelleri çalıştırmak büyük donanım kaynakları, enerji ve zaman gerektiriyor. İşte bu noktada, hem verimliliği hem de esnekliği bir araya getirmeyi hedefleyen Mixture of Experts (MoE) mimarisi ön plana çıkıyor.">
+
+<title>Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi – AIHorizons- by NTU</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-df479d6c4d77d0e0dfbcb5361179d7fd.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "Sonuç yok",
+    "search-matching-documents-text": "eşleşen belgeler",
+    "search-copy-link-title": "Aramak için bağlantıyı kopyalayın",
+    "search-hide-matches-text": "Ek eşleşmeleri gizle",
+    "search-more-match-text": "bu belgede daha fazla eşleşme",
+    "search-more-matches-text": "bu belgede daha fazla eşleşmeler",
+    "search-clear-button-title": "Temizle",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "İptal et",
+    "search-submit-button-title": "Göndermek",
+    "search-label": "Aramak"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-fixed fullcontent">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top quarto-banner">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a class="navbar-brand" href="../../index.html">
+    <span class="navbar-title">AIHorizons- by NTU</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Aramak"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Gezinmeyi değiştir" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../index.html"> 
+<span class="menu-text">Ana Sayfa</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../about.html"> 
+<span class="menu-text">Hakkında</span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+</header>
+<!-- content -->
+<header id="title-block-header" class="quarto-title-block default page-columns page-full">
+  <div class="quarto-title-banner page-columns page-full">
+    <div class="quarto-title column-body">
+      <h1 class="title"><strong>Mixture of Experts (MoE): Büyük Dil Modellerinde Verimlilik ve Uzmanlık Mimarisi</strong></h1>
+                  <div>
+        <div class="description">
+          Yapay zekâ ve doğal dil işleme alanında son yıllarda yaşanan gelişmeler, büyük dil modellerinin (LLM – Large Language Model) hayatımıza hızla girmesini sağladı. Ancak bu modellerin büyümesiyle birlikte, eğitim ve çalıştırma maliyetleri de ciddi oranda arttı. GPT-4, Claude, Gemini,Lllama gibi 100 milyarlarca parametreye sahip modelleri çalıştırmak büyük donanım kaynakları, enerji ve zaman gerektiriyor. İşte bu noktada, <strong>hem verimliliği hem de esnekliği bir araya getirmeyi hedefleyen Mixture of Experts (MoE)</strong> mimarisi ön plana çıkıyor.
+        </div>
+      </div>
+                          <div class="quarto-categories">
+                <div class="quarto-category">AI</div>
+                <div class="quarto-category">LLM</div>
+                <div class="quarto-category">MoE</div>
+                <div class="quarto-category">Expert Opinion</div>
+              </div>
+                  </div>
+  </div>
+    
+  
+  <div class="quarto-title-meta">
+
+      <div>
+      <div class="quarto-title-meta-heading">Yazar</div>
+      <div class="quarto-title-meta-contents">
+               <p>Naim Teoman Ünlü </p>
+            </div>
+    </div>
+      
+      <div>
+      <div class="quarto-title-meta-heading">Yayınlanma Tarihi</div>
+      <div class="quarto-title-meta-contents">
+        <p class="date">6 Temmuz 2025</p>
+      </div>
+    </div>
+    
+      
+    </div>
+    
+  
+  </header><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content quarto-banner-title-block" id="quarto-document-content">
+
+
+
+
+
+<blockquote class="blockquote">
+<p><strong>Sesli Dinle</strong></p>
+<audio controls="">
+<source src="moe.mp3" type="audio/mpeg">
+<p>Your browser does not support the audio element. </p>
+</audio></blockquote>
+<section id="mixture-of-experts-moe-mimarisi-nedir" class="level2">
+<h2 class="anchored" data-anchor-id="mixture-of-experts-moe-mimarisi-nedir">Mixture of Experts (MoE) Mimarisi Nedir?</h2>
+<p><strong>Mixture of Experts (MoE),</strong>büyük ölçekli derin öğrenme modellerinin tüm bileşenlerini aynı anda çalıştırmak yerine, <strong>sadece belirli görevler için özelleşmiş alt bileşenlerin—yani uzman ağların—etkinleştirilmesine dayanan</strong> bir yapay zekâ mimarisidir.</p>
+<p>Bu yaklaşıma göre her bir girdi (örneğin bir kelime, cümle veya görsel öge), tüm modelin işleminden geçmek yerine yalnızca o girdiye özgü bilgi işleme kapasitesi yüksek olan birkaç uzman alt ağına yönlendirilir. Böylece, <strong>model yalnızca gerekli uzmanları devreye sokarak hem hesaplama yükünü azaltır hem de işlem süresini optimize eder.</strong> Bu seçici aktivasyon, büyük parametreli modellerin ön eğitim ve çıkarım süreçlerinde önemli ölçüde verimlilik sağlamaktadır.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="moe_exp.png" class="img-fluid quarto-figure quarto-figure-center figure-img" width="400"></p>
+</figure>
+</div>
+<p>MoE mimarisinin kökeni, Jordan ve Jacobs tarafından 1991 yılında önerilen <strong>“Adaptive Mixture of Local Experts”</strong> çalışmasına dayanmaktadır. Bu çalışmada, her biri farklı veri alt kümelerinde uzmanlaşmış çok sayıda alt ağdan oluşan bir sistem sunulmuş; bu sistemde hem uzmanlar, hem de girdiyi hangi uzmana yönlendireceğini öğrenen bir geçit ağı (gating network) birlikte eğitilmiştir. Elde edilen deneysel sonuçlar, bu yapının klasik tekil modellere kıyasla aynı doğruluk seviyesine, daha az sayıda eğitim döngüsü ile ulaşabildiğini ortaya koymuştur.</p>
+<p>Üretken yapay zekâ ve büyük dil modellerinin (LLM) hızla yaygınlaşmasıyla birlikte, <strong>model boyutları yüz milyarlarca parametreyi aşarken, MoE (Mixture of Experts) mimarileri toplam parametre kapasitesini trilyon düzeyine çıkararak ölçeklenebilirlik ve işlem verimliliği açısından kritik bir çözüm olarak</strong> öne çıkmaktadır.</p>
+</section>
+<section id="derin-öğrenmede-mixture-of-experts-moe-yaklaşımı" class="level2">
+<h2 class="anchored" data-anchor-id="derin-öğrenmede-mixture-of-experts-moe-yaklaşımı">Derin Öğrenmede Mixture of Experts (MoE) Yaklaşımı</h2>
+<p>Günümüz derin öğrenme modelleri, çok katmanlı ve birbirine bağlı yapay sinir ağları yapısıyla yapılandırılmıştır. Bu modellerde her bir nöron, önceki katmandan gelen girdilere bir aktivasyon fonksiyonu uygulayarak çıktısını bir sonraki katmana iletir. Modelin öğrenme yetisi, bu katmanlar arasındaki bağlantılarda bulunan parametreler—yani ağırlıklar ve bias terimleri—aracılığıyla sağlanır. Öğrenme süreci, bu parametrelerin hedef çıktılara yönelik doğru tahminleri maksimize edecek şekilde optimize edilmesiyle gerçekleşir; bu amaçla genellikle gradyan inişi <strong>(gradient descent)</strong> gibi optimizasyon yöntemleri kullanılır.</p>
+<p>Bununla birlikte, modelin parametre sayısının artması, kuramsal kapasitesini ve ifade gücünü yükseltirken, aynı zamanda hesaplama maliyetlerinde de ciddi bir artışa yol açmaktadır. <strong>Geleneksel yoğun (dense) yapılarda, her bir giriş örneği için tüm ağ yapısı aktif hâle gelir.</strong> Bu durum, model performansı ile işlem verimliliği arasında kaçınılmaz bir denge kurulmasını zorunlu kılar.</p>
+<p>MoE mimarileri ise bu denge sorununa koşullu hesaplama (conditional computation) yaklaşımıyla çözüm sunmaktadır. Bu yöntemde, <strong>her bir giriş yalnızca ilgili ve görevle en uyumlu birkaç uzman modüle yönlendirilir; böylece ağ genelinde seyrek (sparse) bir aktivasyon sağlanır.</strong> Sonuç olarak, modelin toplam parametre sayısı artırılsa dahi, aktif hesaplama, yalnızca sınırlı sayıdaki uzmanla gerçekleştirildiği için işlem maliyeti sabit tutulabilir. <strong>Bu yaklaşım, özellikle büyük ölçekli modellerde hem verimlilik hem de ölçeklenebilirlik açısından önemli avantajlar sunmaktadır.</strong></p>
+</section>
+<section id="moe-yapısının-temel-bileşenleri" class="level2">
+<h2 class="anchored" data-anchor-id="moe-yapısının-temel-bileşenleri">MOE Yapısının Temel Bileşenleri</h2>
+<p><strong>1. Expert (Uzman) Alt Ağlar</strong></p>
+<p><strong>Her biri bir transformer bloğu veya küçük bir model gibi çalışan, farklı görevlerde uzmanlaşabilen alt ağlardır.</strong> MoE’de genellikle 8–16 uzman barındırılır, ancak bunların yalnızca birkaç tanesi aktif hale gelir . Örneğin bazı uzmanlar matematiksel işlemlerde, bazıları şiir üretiminde, bazıları ise kod yazımında daha başarılı olabilir.</p>
+<p>Örneğin Mixtral 8x7B’de her uzman farklı türde cümleleri veya görevleri öğrenmiş olabilir. Aşağıdaki örneklerle açıklamaya çalışalım:</p>
+<div class="callout callout-style-default callout-note callout-titled" style="background-color:#e6ffe6;">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Mixtral 8x7B Örnekler
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Örnek 1: Matematik Uzmanı</strong></p>
+<p><strong>Girdi:</strong> “Bir üçgenin iç açıları toplamı kaç derecedir?”</p>
+<p>Bu cümle matematiksel bilgi içerdiği için yönlendirici büyük ihtimalle “Matematik Uzmanı” olan Expert 3 ve belki “Bilgi Anlamlandırma Uzmanı” olan Expert 6’yı seçer.</p>
+<p>Bu uzmanlar zamanla bu tür hesaplamalı veya mantıksal cümleleri çözmede iyi hale gelmiştir.</p>
+<p><strong>Örnek 2: Günlük Sohbet / Diyalog Uzmanı</strong></p>
+<p><strong>Girdi:</strong> “Bugün nasılsın?”</p>
+<p>Bu tür sohbet dili için model büyük ihtimalle “Diyalog Uzmanı” olan Expert 2 ve belki “Sentiment Analizi Uzmanı” olan Expert 5’i seçer. Bu uzmanlar daha önce sohbet verileriyle eğitilmiş oldukları için, bu dil tarzını daha iyi işlerler.</p>
+<p><strong>Örnek 3: Kod Yazma</strong></p>
+<p><strong>Girdi:</strong> “Python’da bir listeyi nasıl sıralarım?”</p>
+<p>Bu soru bir yazılım/kodlama içeriği içeriyor. Yönlendirici burada örneğin Expert 1 (kod uzmanı) ve Expert 7’yi seçebilir. Çünkü bu uzmanlar kod verileriyle eğitilmiş, sort(), lambda, for loop gibi yapıları çok iyi tanıyor olabilir.</p>
+<p><strong>Örnek 4: Fransızca Çeviri</strong></p>
+<p><strong>Girdi:</strong> “Comment ça va ?” (Fransızca bir giriş cümlesi)</p>
+<p>Yönlendirici bu durumda “Çok dilli uzmanlar” olan Expert 4 ve Expert 6 gibi Fransızca verilerle eğitilmiş uzmanları aktif hale getirir.</p>
+</div>
+</div>
+<p><strong>2. Gating Ağı (Router) (Yönlendirici)</strong></p>
+<p><strong>Yönlendirici modülü, verilen girdinin hangi uzmanlara gönderileceğine karar verir.</strong> Bunu yaparken, girdi verisini analiz eder ve “top k routing” gibi stratejilerle en uygun uzmanları seçer (örneğin top 2, top 4). Seçim genellikle softmax ağırlıklarıyla yapılır ve her adımda yalnızca birkaç uzman aktif hale getirilir (örneğin 2 uzman seçilir).</p>
+<p><strong>3. Seyrek Aktivasyon (Sparse Activation)</strong></p>
+<p>Modelde örneğin 16 uzman varsa, her girdi için sadece 2’si çalıştırılır. Bu da MoE’yi “seyrek” bir yapı haline getirir. Bu sayede,<strong>model toplamda devasa bir boyuta sahip olsa da, çalışma zamanında sadece küçük bir kısmı aktif olur.</strong></p>
+</section>
+<section id="moe-neden-kullanılır" class="level2">
+<h2 class="anchored" data-anchor-id="moe-neden-kullanılır">MoE Neden Kullanılır?</h2>
+<p><strong>🔹 Hesaplama Verimliliği</strong></p>
+<p>MoE, <strong>çok büyük modellerin sadece küçük bir kısmını çalıştırarak aynı doğrulukta sonuçlar elde etmeyi mümkün kılar.</strong> Bu, özellikle inference (çalıştırma-çıkarım) aşamasında gecikmeyi ve enerji tüketimini önemli ölçüde azaltır.</p>
+<p><strong>🔹 Görev Bazlı Uzmanlık</strong></p>
+<p><strong>Farklı alt modüller farklı görevlerde uzmanlaşabilir.</strong> Model zamanla hangi girdilerin hangi uzmanlara gitmesi gerektiğini öğrenebilir ve bu da genel performansı artırır.</p>
+<p><strong>🔹 Hataya Tolerans</strong></p>
+<p>Hata toleransı artar; <strong>bir uzman devre dışı kalsa bile, diğerleri çalışmaya devam eder.</strong></p>
+<p><strong>🔹 Ölçeklenebilirlik</strong></p>
+<p>MoE, <strong>toplam parametre sayısını artırarak modelin kapasitesini büyütmeyi mümkün kılar.</strong> Ancak inference sırasında bu büyük yapının yalnızca küçük bir parçası kullanıldığından maliyet kontrollü kalır.</p>
+</section>
+<section id="güncel-moe-tabanlı-modeller-ve-uygulamalar-20232025" class="level2">
+<h2 class="anchored" data-anchor-id="güncel-moe-tabanlı-modeller-ve-uygulamalar-20232025">Güncel MoE Tabanlı Modeller ve Uygulamalar (2023–2025)</h2>
+<p><strong>1. Mixtral 8x7B – Mistral AI (2023 Q4)</strong></p>
+<p>• 8 uzmanlı bir modeldir.</p>
+<p>• Her bir giriş için yalnızca 2 uzman etkinleştirilir.</p>
+<p>• Toplam parametre sayısı yaklaşık 46 milyar, etkin parametre sayısı ise yalnızca 12.9 milyardır.</p>
+<p>• Açık kaynak olarak sunulmuş ilk başarılı MoE LLM’lerden biridir.</p>
+<p>• Kodlama, mantıksal çıkarım ve doğal dil görevlerinde son derece başarılıdır.</p>
+<p><strong>2. DBRX – Databricks (2024 Q1)</strong></p>
+<p>• 132 milyar parametreye sahiptir.</p>
+<p>• Her token girişi için 4 uzman aktiftir.</p>
+<p>• Ölçek ve hız açısından oldukça iddialıdır.</p>
+<p>• Büyük dil modeli altyapılarına entegre edilebilir durumdadır.</p>
+<p><strong>3. Google Gemini 1.5 Pro (2024)</strong></p>
+<p>• Tam teknik dokümantasyonu paylaşılmamıştır, ancak MoE yapısına yakın dinamik uzmanlaşma mekanizmaları kullanmaktadır.</p>
+<p>• Multimodal girişler (metin, görsel, kod vb.) için farklı uzman modülleri devreye sokulabilmektedir.</p>
+<p><strong>4. OpenMoE – Hugging Face Topluluğu (2024)</strong></p>
+<p>• Eğitim stratejileri, load balancing ve yönlendirici mimarilerini araştırmak için açık kaynak MoE frameworktür.</p>
+<p>• OpenMoE 8B ve 8B Chat, 8 milyar parametre, 4 MoE katmanı, 32 uzmanlı yapıdır. 1.1 trilyon token üzerinden eğitilerek hem ön eğitim hem de SFT (instruct tuning) yapılmıştır.</p>
+<p>• OpenMoE 34B, 34 milyar parametreli modeldir. 8 MoE katmanı ve 32 uzmanla hâlen eğitilmektedir. 200 milyar token’a ulaşmış durumdadır.</p>
+<p><strong>5. Llama 4 – Meta AI (2024)</strong></p>
+<p>• Llama 4’ün Scout ve Maverick versiyonları MoE mimarisi üzerine inşa edilmiştir.</p>
+<p>• Scout: Toplam 109 milyar parametre, 16 uzman içerir. Her token için ortalama 17 milyar parametre aktif olmaktadır.</p>
+<p>• Maverick: Toplam 400 milyar parametre, 128 uzman içerir. Yine yaklaşık 17 milyar parametre aktif olmaktadır.</p>
+<p>• LLaMA ailesinin önceki versiyonlarına kıyasla ölçeklenebilirlik, verimlilik ve bağlamsal tutarlılık açısından önemli iyileştirmeler içerir.</p>
+<p>• Akademik ve endüstriyel kullanımda, özelleştirilmiş uzman modülleri sayesinde farklı görevler için esnek şekilde optimize edilebilir.</p>
+</section>
+<section id="teknik-zorluklar" class="level2">
+<h2 class="anchored" data-anchor-id="teknik-zorluklar">Teknik Zorluklar</h2>
+<p>MoE mimarisi güçlü olsa da çeşitli teknik zorlukları beraberinde getirmektedir:</p>
+<p><strong>🔸 Yönlendirici Öğrenmesi</strong></p>
+<p>Yönlendirici modülü <strong>yanlış uzmanları seçerse modelin performansı düşer.</strong> Bu nedenle yönlendirici eğitimi dikkatle yapılmalıdır.</p>
+<p><strong>🔸 Load Balancing (Yük Dengelemesi)</strong></p>
+<p><strong>Bazı uzmanlar çok fazla, bazıları çok az kullanılırsa model dengesiz öğrenir.</strong> Bu, performans kaybına ve kaynak israfına yol açabilir. Bu dengesizliği önlemek için entropy tabanlı denge kayıpları kullanılır.</p>
+<p><strong>🔸 Yüksek VRAM (Video Belleği) Gereksinimi:</strong></p>
+<p>MoE’lerin mimarisinden kaynaklanan bir diğer pratik zorluk, yüksek VRAM gereksinimidir. <strong>Her ne kadar bir token aynı anda tüm uzmanları etkinleştirmese de, çıkarım veya eğitim sırasında tüm uzmanların parametrelerinin belleğe yüklenmesi gerekmektedir. Bu, özellikle çok sayıda uzmana sahip büyük MoE modelleri için önemli miktarda VRAM gerektirir.</strong></p>
+<p>Örneğin <strong>Mixtral 8x7B FP16 formatıyla çalıştırıldığında yaklaşık 92 GB VRAM</strong> veya bunun kadar CPU RAM/VRAM karma ihtiyaç duyulabilmektedir.</p>
+<p>Özellikle büyük MoE modeller <strong>(örneğin Llama 4 Maverick) VRAM ihtiyacı 300–400B parametre için tek GPU’da kullanılamayacak düzeydedir.</strong> Küçük ölçekli donanımlarda veya sınırlı bellek kaynaklarına sahip ortamlarda MoE’leri çalıştırmak zorlaşabilir. Bu sorunu hafifletmek için, uzmanları belleğe dinamik olarak yükleme/boşaltma veya uzmanların farklı cihazlara dağıtılması gibi stratejiler geliştirilmektedir.</p>
+<p><strong>🔸 İnce Ayarda (Fine-tuning) Genelleme Zorlukları ve Aşırı Uyum (Overfitting):</strong></p>
+<p>MoE’lerin en önemli sorunlarından biri, ön eğitimden sonraki ince ayar aşamasında ortaya çıkar. <strong>Geçmişte, MoE’ler ince ayar sırasında yoğun modellere kıyasla genelleme konusunda zorluklar yaşamış ve belirli veri kümelerine aşırı uyum (overfitting) eğilimi göstermişlerdir.</strong> Aşırı uyum, modelin eğitim verilerini çok iyi öğrenmesi ancak yeni, bilinmeyen verilere kötü performans göstermesi anlamına gelir. Bu, MoE’lerin geniş bir uygulama yelpazesinde güvenilir bir şekilde kullanılmasını engelleyebilir. Bu sorunun nedenleri ve çözümleri üzerine yoğun araştırmalar devam etmektedir. Potansiyel çözümler arasında daha gelişmiş yönlendirme mekanizmaları, düzenlileştirme teknikleri ve ince ayar için özel optimizasyon stratejileri yer almaktadır.</p>
+<p><strong>🔸 Dağıtık Eğitim Altyapısı</strong></p>
+<p><strong>Yüzlerce uzmanı çalıştırmak ve yönetmek, güçlü paralel ve dağıtık altyapılar gerektirir.</strong> Özellikle büyük modellerde GPU dağıtımı karmaşık hale gelebilir.</p>
+</section>
+<section id="moenin-geleceği" class="level2">
+<h2 class="anchored" data-anchor-id="moenin-geleceği">MoE’nin Geleceği</h2>
+<p>MoE, büyük dil modellerinin daha verimli ve uzmanlaşmış hale gelmesi için kritik bir adımdır. Önümüzdeki dönemde:</p>
+<p>• <strong>Dinamik MoE</strong> yapılarla uzman sayısı koşullara göre değişebilecek,</p>
+<p>• <strong>Multimodal MoE</strong> sistemlerle metin, görsel ve ses uzmanları birlikte çalışacak,</p>
+<p>• <strong>Kendi kendini organize eden uzmanlar</strong> ile daha az insan müdahalesiyle uzmanlık oluşacak,</p>
+<p>• <strong>Donanım odaklı karar verme</strong> ile yönlendirici aynı zamanda kullanılabilir GPU/CPU’ya göre seçim yapabilecektir.</p>
+<p>OpenAI, Google, Meta, Mistral gibi öncü kuruluşlar MoE temelli modeller geliştirmeye devam ederken, bu yapı araştırma ve üretken yapay zekâ alanında devrim yaratmaya aday bir mimari olarak öne çıkmaktadır</p>
+</section>
+<section id="sonuç" class="level2">
+<h2 class="anchored" data-anchor-id="sonuç">Sonuç:</h2>
+<p><strong>Mixture of Experts (MoE),</strong> büyük dil modellerinin <strong>hesaplama yükünü hafifletirken uzmanlaşma ve modülerlik kazandıran güçlü bir mimaridir.</strong> Büyük dil modellerinin giderek daha fazla alanda kullanılması, bu tür mimarilerin daha da önem kazanmasına neden olmaktadır. Gelecekte, daha stabil, daha modüler ve daha az kaynakla çalışan MoE modellerinin yaygınlaşması beklenmektedir. <strong>Maliyet, hız ve doğruluk arasında en iyi dengeyi arayan herkes için, MoE mimarisi kullanılan modeller değerlendirilmesi gereken önemli bir seçenek olarak öne çıkmaktadır.</strong></p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Kopyalandı");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Kopyalandı");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
