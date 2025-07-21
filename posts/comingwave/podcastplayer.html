@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Müzik Çalar</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* Custom styles for the range input */
+        input[type=range] {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 4px;
+            background: #e5e7eb;
+            border-radius: 2px;
+            outline: none;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out;
+        }
+
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            background: #10b981;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+            box-shadow: 0 0 2px rgba(0,0,0,0.2);
+        }
+
+        input[type=range]::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            background: #10b981;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid white;
+        }
+
+        /* Waveform simulation */
+        .waveform {
+            display: flex;
+            align-items: center;
+            height: 50px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .waveform-bar {
+            background-color: #d1d5db;
+            margin: 0 1px;
+            flex-grow: 1;
+            border-radius: 2px;
+            transition: background-color 0.3s ease;
+        }
+        .waveform.animating .waveform-bar {
+            background-color: #10b981;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen p-4">
+
+    <div id="player-container" class="max-w-3xl w-full bg-white rounded-xl shadow-lg overflow-hidden relative">
+        
+        <div style="position: absolute; top: 15px; right: 20px; font-family: 'Great Vibes', cursive; font-size: 26px; color: #475569; z-index: 10;">
+            by Naim Teoman Ünlü
+        </div>
+
+        <div class="p-6 md:flex md:items-center md:gap-6 bg-gray-50">
+            <div class="md:w-40 md:h-40 w-full h-auto flex-shrink-0 mb-4 md:mb-0">
+                <img id="album-art" src="album1.png" alt="Albüm Kapağı" class="w-full h-full object-cover rounded-lg shadow-md" onerror="this.onerror=null;this.src='https://placehold.co/400x400/334155/ffffff?text=Hata';">
+            </div>
+
+            <div class="flex-grow">
+                <p id="artist" class="text-sm text-gray-500">Sanatçı Adı</p>
+                <h2 id="track-title" class="text-2xl font-bold text-gray-800 mt-1">Parça Adı</h2>
+
+                <div class="flex items-center justify-center sm:justify-start gap-4 mt-4">
+                    <button id="rewind-btn" class="text-gray-600 hover:text-black transition-colors duration-200 p-2 relative">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"></path></svg>
+                        <span class="absolute text-xs font-bold top-0 right-0 bg-gray-200 rounded-full px-1">15</span>
+                    </button>
+                    
+                    <button id="play-pause-btn" class="bg-emerald-500 hover:bg-emerald-600 text-white w-16 h-16 rounded-full flex items-center justify-center shadow-lg transition-transform transform hover:scale-105">
+                        <svg id="play-icon" class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4.53 2.9A1 1 0 003 3.84v12.32a1 1 0 001.53.848l9.8-6.16a1 1 0 000-1.696L4.53 2.9z"></path></svg>
+                        <svg id="pause-icon" class="w-8 h-8 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 3a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1zm8 0a1 1 0 00-1 1v12a1 1 0 102 0V4a1 1 0 00-1-1z"></path></svg>
+                    </button>
+                    
+                    <button id="forward-btn" class="text-gray-600 hover:text-black transition-colors duration-200 p-2 relative">
+                        <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"></path></svg>
+                        <span class="absolute text-xs font-bold top-0 right-0 bg-gray-200 rounded-full px-1">15</span>
+                    </button>
+                </div>
+                
+                <div class="flex items-center gap-3 mt-4">
+                    <span id="current-time" class="text-xs text-gray-600 w-10 text-left">0:00</span>
+                    <input id="progress-bar" type="range" value="0" min="0" max="100" class="w-full">
+                    <span id="duration" class="text-xs text-gray-600 w-10 text-right">0:00</span>
+                    <div class="flex items-center gap-2">
+                        <button id="volume-btn" class="text-gray-600 hover:text-black">
+                            <svg id="volumeOnIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <path d="M15.54 8.46a5 5 0 010 7.07"></path>
+                                <path d="M19.07 4.93a10 10 0 010 14.14"></path>
+                            </svg>
+                            <svg id="volumeMutedIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                <line x1="23" y1="9" x2="17" y2="15"></line>
+                                <line x1="17" y1="9" x2="23" y2="15"></line>
+                            </svg>
+                        </button>
+                        <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" class="w-24">
+                    </div>
+                    <div class="flex items-center">
+                        <button id="speed-btn" class="text-sm font-semibold text-gray-600 hover:text-black bg-gray-200 rounded-md px-3 py-1 transition-colors duration-200 w-16 text-center">
+                            1.0x
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex justify-center bg-gray-50 py-2">
+             <div id="waveform-container" class="waveform w-2/3">
+                </div>
+        </div>
+
+        <div id="playlist" class="bg-white max-h-60 overflow-y-auto">
+            </div>
+    </div>
+
+    <audio id="audio-source" preload="metadata" crossOrigin="anonymous"></audio>
+
+    <script>
+        // --- DOM Elements ---
+        const playerContainer = document.getElementById('player-container');
+        const audio = document.getElementById('audio-source');
+        const playPauseBtn = document.getElementById('play-pause-btn');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const rewindBtn = document.getElementById('rewind-btn');
+        const forwardBtn = document.getElementById('forward-btn');
+        const progressBar = document.getElementById('progress-bar');
+        const currentTimeEl = document.getElementById('current-time');
+        const durationEl = document.getElementById('duration');
+        const albumArtEl = document.getElementById('album-art');
+        const artistEl = document.getElementById('artist');
+        const trackTitleEl = document.getElementById('track-title');
+        const playlistEl = document.getElementById('playlist');
+        const waveformContainer = document.getElementById('waveform-container');
+        const volumeBtn = document.getElementById('volume-btn');
+        const volumeSlider = document.getElementById('volume-slider');
+        const volumeOnIcon = document.getElementById('volumeOnIcon');
+        const volumeMutedIcon = document.getElementById('volumeMutedIcon');
+        const speedBtn = document.getElementById('speed-btn');
+
+        // --- Playlist Data ---
+        // DEĞİŞİKLİK: Bu bölümü kendi yerel dosyalarınıza göre güncelleyin.
+        // MP3 dosyalarınız "playlist" klasöründe, kapak resimleriniz "images" klasöründe olmalı.
+        const playlistData = [
+            { id: 0, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 1", src: "https://mcdn.podbean.com/mf/web/dwb7fwpauh99fd8z/TheComingWavePart1.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "06:19" },
+            { id: 1, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 2", src: "https://mcdn.podbean.com/mf/web/2w5afe36zkvfdajv/TheComingWavePart2.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "08:24" },
+            { id: 2, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 3", src: "https://mcdn.podbean.com/mf/web/zbm2tsfwmwi4ksth/TheComingWavePart3.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "06:31" },
+            { id: 3, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 4", src: "https://mcdn.podbean.com/mf/web/ndde6jfmj556gvap/TheComingWavePart4.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "07:48" },
+        ];
+        
+        // --- State ---
+        let currentTrackIndex = 0;
+        let audioContext;
+        let analyser;
+        let lastVolume = 1;
+        const playbackSpeeds = [1.0, 1.25, 1.5, 2.0, 0.75];
+        let currentSpeedIndex = 0;
+
+
+        // --- Functions ---
+        function loadTrack(trackIndex) {
+            const track = playlistData[trackIndex];
+            artistEl.textContent = track.artist;
+            trackTitleEl.textContent = track.title;
+            albumArtEl.src = track.albumArt;
+            audio.src = track.src;
+            audio.playbackRate = playbackSpeeds[currentSpeedIndex];
+            
+            updatePlaylistUI();
+
+            progressBar.value = 0;
+            currentTimeEl.textContent = "0:00";
+            
+            audio.onloadedmetadata = () => {
+                // Not: Yerel dosyalarda 'duration' bazen direkt yüklenmeyebilir.
+                // Bu yüzden playlistData içindeki değeri kullanabiliriz veya audio elementine güveniriz.
+                durationEl.textContent = formatTime(audio.duration) || track.duration;
+                progressBar.max = audio.duration;
+                generateStaticWaveform();
+            };
+            waveformContainer.classList.remove('animating');
+        }
+        
+        function renderPlaylist() {
+            playlistEl.innerHTML = '';
+            playlistData.forEach((track, index) => {
+                const isCurrent = index === currentTrackIndex;
+                const isPlaying = !audio.paused;
+                const li = document.createElement('li');
+                li.className = `flex items-center justify-between p-4 cursor-pointer hover:bg-gray-100 border-t border-gray-200 ${isCurrent ? 'bg-emerald-50 text-emerald-700 font-semibold' : 'text-gray-700'}`;
+                li.dataset.index = index;
+                
+                li.innerHTML = `
+                    <div class="flex items-center gap-4 overflow-hidden">
+                        <div class="play-indicator w-6 text-center flex-shrink-0">
+                            ${isCurrent && isPlaying ? 
+                                `<svg class="w-5 h-5 animate-pulse" fill="currentColor" viewBox="0 0 20 20"><path d="M5 4h3v12H5V4zm7 0h3v12h-3V4z"></path></svg>` : 
+                                `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path d="M6.3 2.841A1.5 1.5 0 004 4.11V15.89a1.5 1.5 0 002.3 1.269l9.344-5.89a1.5 1.5 0 000-2.538L6.3 2.84z"></path></svg>`
+                            }
+                        </div>
+                        <span class="truncate">${track.title}</span>
+                    </div>
+                    <div class="flex items-center gap-4 text-sm flex-shrink-0 ${isCurrent ? 'text-emerald-600' : 'text-gray-500'}">
+                        <span>${track.duration}</span>
+                        <a href="${track.src}" download="${track.title}.mp3" class="download-btn hover:text-black p-1" onclick="event.stopPropagation();">
+                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                        </a>
+                    </div>
+                `;
+                li.addEventListener('click', () => {
+                    currentTrackIndex = index;
+                    loadTrack(currentTrackIndex);
+                    audio.play();
+                });
+                playlistEl.appendChild(li);
+            });
+        }
+        
+        function updatePlaylistUI() {
+            renderPlaylist();
+        }
+
+        function togglePlayPause() {
+            if (audio.paused) {
+                audio.play().catch(error => console.error("Playback failed:", error));
+            } else {
+                audio.pause();
+            }
+        }
+
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const minutes = Math.floor(seconds / 60);
+            const secs = Math.floor(seconds % 60);
+            return `${minutes}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        function updateProgress() {
+            if (audio.duration) {
+                progressBar.value = audio.currentTime;
+                currentTimeEl.textContent = formatTime(audio.currentTime);
+            }
+        }
+
+        function setProgress(e) {
+            audio.currentTime = e.target.value;
+        }
+
+        function setVolume(e) {
+            audio.muted = false;
+            audio.volume = e.target.value;
+        }
+
+        function updateVolumeIcon() {
+            const volume = audio.volume;
+            const isMuted = audio.muted;
+
+            if (isMuted || volume === 0) {
+                volumeMutedIcon.classList.remove('hidden');
+                volumeOnIcon.classList.add('hidden');
+            } else {
+                volumeMutedIcon.classList.add('hidden');
+                volumeOnIcon.classList.remove('hidden');
+            }
+        }
+        
+        function toggleMute() {
+            if (audio.muted) {
+                audio.muted = false;
+                audio.volume = lastVolume;
+            } else {
+                lastVolume = audio.volume;
+                audio.muted = true;
+                audio.volume = 0; 
+            }
+        }
+        
+        function cyclePlaybackSpeed() {
+            currentSpeedIndex = (currentSpeedIndex + 1) % playbackSpeeds.length;
+            const newSpeed = playbackSpeeds[currentSpeedIndex];
+            audio.playbackRate = newSpeed;
+            speedBtn.textContent = `${newSpeed.toFixed(2).replace(/\.00$/, '').replace(/\.([1-9])0$/, '.$1')}x`;
+        }
+
+        function setupAudioContext() {
+            try {
+                // AudioContext'in daha önce başlatılıp başlatılmadığını kontrol et
+                if (audioContext && audioContext.state !== 'closed') return;
+                
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const source = audioContext.createMediaElementSource(audio);
+                analyser = audioContext.createAnalyser();
+                analyser.fftSize = 256;
+                source.connect(analyser);
+                analyser.connect(audioContext.destination);
+            } catch (e) {
+                console.error("Web Audio API is not supported in this browser.", e);
+            }
+        }
+
+        function generateStaticWaveform() {
+            waveformContainer.innerHTML = '';
+            const barCount = 60; 
+            for (let i = 0; i < barCount; i++) {
+                const bar = document.createElement('div');
+                bar.className = 'waveform-bar';
+                bar.style.height = `${Math.random() * 80 + 15}%`;
+                waveformContainer.appendChild(bar);
+            }
+        }
+        
+        function visualize() {
+            if (audio.paused || !analyser) {
+                return; 
+            };
+
+            const bufferLength = analyser.frequencyBinCount;
+            const dataArray = new Uint8Array(bufferLength);
+            analyser.getByteFrequencyData(dataArray);
+            const bars = waveformContainer.children;
+            const barCount = bars.length;
+
+            for (let i = 0; i < barCount; i++) {
+                const dataIndex = Math.floor(i * (bufferLength / barCount));
+                const barHeight = (dataArray[dataIndex] / 255) * 85 + 15;
+                if(bars[i]) bars[i].style.height = `${barHeight}%`;
+            }
+            
+            requestAnimationFrame(visualize);
+        }
+
+        // --- Event Listeners ---
+        playPauseBtn.addEventListener('click', () => {
+             // Kullanıcı etkileşimiyle AudioContext'i başlat/devam ettir
+            if (audioContext && audioContext.state === 'suspended') {
+                audioContext.resume();
+            }
+            togglePlayPause();
+        });
+
+        rewindBtn.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 15); });
+        forwardBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration, audio.currentTime + 15); });
+        speedBtn.addEventListener('click', cyclePlaybackSpeed);
+        
+        audio.addEventListener('play', () => {
+            if (!audioContext) setupAudioContext();
+            playIcon.classList.add('hidden');
+            pauseIcon.classList.remove('hidden');
+            waveformContainer.classList.add('animating');
+            updatePlaylistUI();
+            requestAnimationFrame(visualize);
+        });
+        
+        audio.addEventListener('pause', () => {
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            waveformContainer.classList.remove('animating');
+            updatePlaylistUI();
+        });
+
+        audio.addEventListener('timeupdate', updateProgress);
+        
+        audio.addEventListener('ended', () => {
+            currentTrackIndex = (currentTrackIndex + 1) % playlistData.length;
+            loadTrack(currentTrackIndex);
+            audio.play();
+        });
+
+        audio.addEventListener('volumechange', () => {
+            if (audio.muted || audio.volume === 0) {
+                volumeSlider.value = 0;
+            } else {
+                volumeSlider.value = audio.volume;
+            }
+            updateVolumeIcon();
+        });
+
+        progressBar.addEventListener('input', setProgress);
+        volumeSlider.addEventListener('input', setVolume);
+        volumeBtn.addEventListener('click', toggleMute);
+
+        // --- Initial Load ---
+        window.addEventListener('load', () => {
+            loadTrack(currentTrackIndex);
+            playIcon.classList.remove('hidden');
+            pauseIcon.classList.add('hidden');
+            audio.volume = 1;
+            lastVolume = 1;
+            volumeSlider.value = 1;
+            updateVolumeIcon();
+            const initialSpeed = playbackSpeeds[currentSpeedIndex];
+            audio.playbackRate = initialSpeed;
+            speedBtn.textContent = `${initialSpeed.toFixed(2).replace(/\.00$/, '').replace(/\.([1-9])0$/, '.$1')}x`;
+        });
+
+    </script>
+</body>
+</html>
