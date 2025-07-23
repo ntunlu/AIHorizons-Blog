@@ -178,13 +178,11 @@
         const speedBtn = document.getElementById('speed-btn');
 
         // --- Playlist Data ---
-        // DEĞİŞİKLİK: Bu bölümü kendi yerel dosyalarınıza göre güncelleyin.
-        // MP3 dosyalarınız "playlist" klasöründe, kapak resimleriniz "images" klasöründe olmalı.
         const playlistData = [
-            { id: 0, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 1", src: "https://mcdn.podbean.com/mf/web/dwb7fwpauh99fd8z/TheComingWavePart1.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "06:19" },
-            { id: 1, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 2", src: "https://mcdn.podbean.com/mf/web/2w5afe36zkvfdajv/TheComingWavePart2.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "08:24" },
-            { id: 2, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 3", src: "https://mcdn.podbean.com/mf/web/zbm2tsfwmwi4ksth/TheComingWavePart3.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "06:31" },
-            { id: 3, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 4", src: "https://mcdn.podbean.com/mf/web/ndde6jfmj556gvap/TheComingWavePart4.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "07:48" },
+            { id: 0, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 1- Yapay Zeka (AI) ve Sentetik Biyoloji", src: "https://mcdn.podbean.com/mf/web/dwb7fwpauh99fd8z/TheComingWavePart1.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "06:19" },
+            { id: 1, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 2- Dalgayı Benzersiz Kılan Özellikler", src: "https://mcdn.podbean.com/mf/web/2w5afe36zkvfdajv/TheComingWavePart2.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "08:24" },
+            { id: 2, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 3- Ulus Devletlerin Kırılganlığı", src: "https://mcdn.podbean.com/mf/web/zbm2tsfwmwi4ksth/TheComingWavePart3.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "06:31" },
+            { id: 3, artist: "Mustafa Süleyman", title: "Gelen Dalga- Bölüm 4- Dalgayı Kontrol Etmek: Dar Patika", src: "https://mcdn.podbean.com/mf/web/ndde6jfmj556gvap/TheComingWavePart4.mp3", albumArt: "album1.png", date: "July 20, 2025", duration: "07:48" },
         ];
         
         // --- State ---
@@ -194,7 +192,6 @@
         let lastVolume = 1;
         const playbackSpeeds = [1.0, 1.25, 1.5, 2.0, 0.75];
         let currentSpeedIndex = 0;
-
 
         // --- Functions ---
         function loadTrack(trackIndex) {
@@ -379,6 +376,11 @@
         
         audio.addEventListener('play', () => {
             if (!audioContext) setupAudioContext();
+
+            // UYGULANAN DEĞİŞİKLİK: Tarayıcının hızı sıfırlama ihtimaline karşı hızı tekrar ayarla
+            const currentSpeed = playbackSpeeds[currentSpeedIndex];
+            audio.playbackRate = currentSpeed;
+
             playIcon.classList.add('hidden');
             pauseIcon.classList.remove('hidden');
             waveformContainer.classList.add('animating');
