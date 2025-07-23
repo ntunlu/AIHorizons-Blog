@@ -72,8 +72,8 @@
 
     <div id="player-container" class="max-w-3xl w-full bg-white rounded-xl shadow-lg overflow-hidden relative">
         
-        <div style="position: absolute; top: 15px; right: 20px; font-family: 'Great Vibes', cursive; font-size: 26px; color: #475569; z-index: 10;">
-            by Naim Teoman Ünlü
+        <div style="position: absolute; top: 05px; right: 20px; font-family: 'Great Vibes', cursive; font-size: 26px; color: #103c78; z-index: 10;">
+            by N.T.Ü
         </div>
 
         <div class="p-6 md:flex md:items-center md:gap-6 bg-gray-50">
@@ -102,41 +102,49 @@
                     </button>
                 </div>
                 
-                <div class="flex items-center gap-3 mt-4">
-                    <span id="current-time" class="text-xs text-gray-600 w-10 text-left">0:00</span>
-                    <input id="progress-bar" type="range" value="0" min="0" max="100" class="w-full">
-                    <span id="duration" class="text-xs text-gray-600 w-10 text-right">0:00</span>
-                    <div class="flex items-center gap-2">
-                        <button id="volume-btn" class="text-gray-600 hover:text-black">
-                            <svg id="volumeOnIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                <path d="M15.54 8.46a5 5 0 010 7.07"></path>
-                                <path d="M19.07 4.93a10 10 0 010 14.14"></path>
-                            </svg>
-                            <svg id="volumeMutedIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                                <line x1="23" y1="9" x2="17" y2="15"></line>
-                                <line x1="17" y1="9" x2="23" y2="15"></line>
-                            </svg>
-                        </button>
-                        <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" class="w-24">
+                <div class="mt-4 space-y-1 grid grid-cols-[auto_1fr_auto] gap-x-3 items-center">
+                    <span id="current-time" class="text-xs text-gray-600">0:00</span>
+                    <input id="progress-bar" type="range" value="0" min="0" max="100" class="w-full block">
+                    <span id="duration" class="text-xs text-gray-600">0:00</span>
+
+                    <span></span>
+
+                    <div class="flex items-center gap-3">
+                        <div class="flex items-center gap-2 flex-grow">
+                            <button id="volume-btn" class="text-gray-600 hover:text-black flex-shrink-0">
+                                <svg id="volumeOnIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <path d="M15.54 8.46a5 5 0 010 7.07"></path>
+                                    <path d="M19.07 4.93a10 10 0 010 14.14"></path>
+                                </svg>
+                                <svg id="volumeMutedIcon" xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                                    <line x1="23" y1="9" x2="17" y2="15"></line>
+                                    <line x1="17" y1="9" x2="23" y2="15"></line>
+                                </svg>
+                            </button>
+                            <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" class="w-full">
+                        </div>
+                        <div class="flex items-center flex-shrink-0">
+                            <button id="speed-btn" class="text-sm font-semibold text-gray-600 hover:text-black bg-gray-200 rounded-md px-3 py-1 transition-colors duration-200 w-16 text-center">
+                                1.0x
+                            </button>
+                        </div>
                     </div>
-                    <div class="flex items-center">
-                        <button id="speed-btn" class="text-sm font-semibold text-gray-600 hover:text-black bg-gray-200 rounded-md px-3 py-1 transition-colors duration-200 w-16 text-center">
-                            1.0x
-                        </button>
-                    </div>
+                    
+                    <span></span>
                 </div>
             </div>
         </div>
 
         <div class="flex justify-center bg-gray-50 py-2">
              <div id="waveform-container" class="waveform w-2/3">
-                </div>
+             </div>
         </div>
 
         <div id="playlist" class="bg-white max-h-60 overflow-y-auto">
-            </div>
+        </div>
+        
     </div>
 
     <audio id="audio-source" preload="metadata" crossOrigin="anonymous"></audio>
@@ -198,8 +206,6 @@
             currentTimeEl.textContent = "0:00";
             
             audio.onloadedmetadata = () => {
-                // Not: Yerel dosyalarda 'duration' bazen direkt yüklenmeyebilir.
-                // Bu yüzden playlistData içindeki değeri kullanabiliriz veya audio elementine güveniriz.
                 durationEl.textContent = formatTime(audio.duration) || track.duration;
                 progressBar.max = audio.duration;
                 generateStaticWaveform();
@@ -310,7 +316,6 @@
 
         function setupAudioContext() {
             try {
-                // AudioContext'in daha önce başlatılıp başlatılmadığını kontrol et
                 if (audioContext && audioContext.state !== 'closed') return;
                 
                 audioContext = new (window.AudioContext || window.webkitAudioContext)();
@@ -357,7 +362,6 @@
 
         // --- Event Listeners ---
         playPauseBtn.addEventListener('click', () => {
-             // Kullanıcı etkileşimiyle AudioContext'i başlat/devam ettir
             if (audioContext && audioContext.state === 'suspended') {
                 audioContext.resume();
             }
