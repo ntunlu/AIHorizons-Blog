@@ -130,12 +130,8 @@
                             </button>
                             <input id="volume-slider" type="range" min="0" max="1" step="0.01" value="1" class="w-full">
                         </div>
-                        <div class="flex items-center flex-shrink-0">
-                            <button id="speed-btn" class="text-sm font-semibold text-gray-600 hover:text-black bg-gray-200 rounded-md px-3 py-1 transition-colors duration-200 w-16 text-center">
-                                1.0x
-                            </button>
+                        
                         </div>
-                    </div>
                     
                     <span></span>
                 </div>
@@ -175,7 +171,7 @@
         const volumeSlider = document.getElementById('volume-slider');
         const volumeOnIcon = document.getElementById('volumeOnIcon');
         const volumeMutedIcon = document.getElementById('volumeMutedIcon');
-        const speedBtn = document.getElementById('speed-btn');
+        /* const speedBtn = document.getElementById('speed-btn'); */
 
         // --- Playlist Data ---
         const playlistData = [
@@ -190,8 +186,10 @@
         let audioContext;
         let analyser;
         let lastVolume = 1;
+        /*
         const playbackSpeeds = [1.0, 1.25, 1.5, 2.0, 0.75];
         let currentSpeedIndex = 0;
+        */
 
         // --- Functions ---
         function loadTrack(trackIndex) {
@@ -200,7 +198,7 @@
             trackTitleEl.textContent = track.title;
             albumArtEl.src = track.albumArt;
             audio.src = track.src;
-            audio.playbackRate = playbackSpeeds[currentSpeedIndex];
+            /* audio.playbackRate = playbackSpeeds[currentSpeedIndex]; */
             
             updatePlaylistUI();
 
@@ -309,12 +307,14 @@
             }
         }
         
+        /*
         function cyclePlaybackSpeed() {
             currentSpeedIndex = (currentSpeedIndex + 1) % playbackSpeeds.length;
             const newSpeed = playbackSpeeds[currentSpeedIndex];
             audio.playbackRate = newSpeed;
             speedBtn.textContent = `${newSpeed.toFixed(2).replace(/\.00$/, '').replace(/\.([1-9])0$/, '.$1')}x`;
         }
+        */
 
         function setupAudioContext() {
             try {
@@ -372,14 +372,16 @@
 
         rewindBtn.addEventListener('click', () => { audio.currentTime = Math.max(0, audio.currentTime - 15); });
         forwardBtn.addEventListener('click', () => { audio.currentTime = Math.min(audio.duration, audio.currentTime + 15); });
-        speedBtn.addEventListener('click', cyclePlaybackSpeed);
+        /* speedBtn.addEventListener('click', cyclePlaybackSpeed); */
         
         audio.addEventListener('play', () => {
             if (!audioContext) setupAudioContext();
-
+            
+            /*
             // UYGULANAN DEĞİŞİKLİK: Tarayıcının hızı sıfırlama ihtimaline karşı hızı tekrar ayarla
             const currentSpeed = playbackSpeeds[currentSpeedIndex];
             audio.playbackRate = currentSpeed;
+            */
 
             playIcon.classList.add('hidden');
             pauseIcon.classList.remove('hidden');
@@ -425,9 +427,11 @@
             lastVolume = 1;
             volumeSlider.value = 1;
             updateVolumeIcon();
+            /*
             const initialSpeed = playbackSpeeds[currentSpeedIndex];
             audio.playbackRate = initialSpeed;
             speedBtn.textContent = `${initialSpeed.toFixed(2).replace(/\.00$/, '').replace(/\.([1-9])0$/, '.$1')}x`;
+            */
         });
 
     </script>
